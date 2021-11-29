@@ -8,7 +8,7 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  final padding = const EdgeInsets.symmetric(horizontal: 20);
+  final padding = EdgeInsets.zero;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +45,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 buildMenuItem(
                   text: 'Dashboard',
                   icon: Icons.space_dashboard,
+                  onClicked: () {},
+                ),
+                const SizedBox(height: 24),
+                buildMenuItem(
+                  text: 'F.I.R.E Assessment',
+                  icon: Icons.local_fire_department,
                   onClicked: () {},
                 ),
                 const SizedBox(height: 16),
