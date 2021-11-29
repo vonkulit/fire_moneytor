@@ -1,3 +1,8 @@
+import 'package:fire_moneytor/screens/about_us_screen.dart';
+import 'package:fire_moneytor/screens/dashboard_screen.dart';
+import 'package:fire_moneytor/screens/fire_assessment_screen.dart';
+import 'package:fire_moneytor/screens/monitor_screen.dart';
+import 'package:fire_moneytor/screens/what_is_fire_screen.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -45,31 +50,41 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 buildMenuItem(
                   text: 'Dashboard',
                   icon: Icons.space_dashboard,
-                  onClicked: () {},
+                  onClicked: () {
+                    chosenItem(context, 0);
+                  },
                 ),
                 const SizedBox(height: 24),
                 buildMenuItem(
                   text: 'F.I.R.E Assessment',
                   icon: Icons.local_fire_department,
-                  onClicked: () {},
+                  onClicked: () {
+                    chosenItem(context, 1);
+                  },
                 ),
                 const SizedBox(height: 16),
                 buildMenuItem(
                   text: 'Monitor',
                   icon: Icons.query_stats,
-                  onClicked: () {},
+                  onClicked: () {
+                    chosenItem(context, 2);
+                  },
                 ),
                 const SizedBox(height: 16),
                 buildMenuItem(
                   text: 'What is F.I.R.E',
                   icon: Icons.device_unknown,
-                  onClicked: () {},
+                  onClicked: () {
+                    chosenItem(context, 3);
+                  },
                 ),
                 const SizedBox(height: 16),
                 buildMenuItem(
                   text: 'About us',
                   icon: Icons.people_sharp,
-                  onClicked: () {},
+                  onClicked: () {
+                    chosenItem(context, 4);
+                  },
                 ),
               ],
             ),
@@ -93,5 +108,37 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       hoverColor: hoverColor,
       onTap: onClicked,
     );
+  }
+
+  void chosenItem(BuildContext context, int index) {
+    Navigator.of(context).pop();
+
+    switch (index) {
+      case 0:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const DashBoardScreen(),
+        ));
+        break;
+      case 1:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const FireAssessmentScreen(),
+        ));
+        break;
+      case 2:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const MonitorScreen(),
+        ));
+        break;
+      case 3:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const WhatIsFireScreen(),
+        ));
+        break;
+      case 4:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const AboutUsScreen(),
+        ));
+        break;
+    }
   }
 }
