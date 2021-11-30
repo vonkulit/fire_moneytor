@@ -5,7 +5,7 @@ class CalcBrain {
       required this.savings,
       required this.monthlyincome});
 
-  final double age;
+  final int age;
   final double monthlyexpense;
   final double savings;
   final double monthlyincome;
@@ -15,14 +15,14 @@ class CalcBrain {
   double _fire = 0.0;
   double _numOfYears = 0.0;
 
-  double calculateAnnualExpense() {
+  void calculateAnnualExpense() {
     annualexpense = monthlyexpense * 12;
-    return annualexpense;
+    //return annualexpense;
   }
 
-  double calculateAnnualIncome() {
+  void calculateAnnualIncome() {
     annualincome = monthlyincome * 12;
-    return annualincome;
+    //return annualincome;
   }
 
   String calculateAge() {
