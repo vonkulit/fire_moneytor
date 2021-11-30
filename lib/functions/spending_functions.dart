@@ -8,6 +8,9 @@ class SpendingList {
     Spendings(item: "Cat food", category: "Food", price: 538.00),
     Spendings(item: "Meralco", category: "Bills", price: 2350.123),
   ];
+  Map map = Map();
+  static  List _values =[];
+  static  List _keys = [];
 
   void addList(String name, String category, double price) {
     listBank.insert(0, Spendings(item: name, category: category, price: price));
@@ -25,8 +28,6 @@ class SpendingList {
   }
 
   void categorySpendSummary() {
-    var map = Map();
-
     for (int i = 0; i < listBank.length; i++) {
       if (!map.containsKey(listBank[i].category)) {
         map[listBank[i].category] = 1;
@@ -34,7 +35,27 @@ class SpendingList {
         map[listBank[i].category] += 1;
       }
     }
+    _keys = map.keys.toList();
+    _values = map.values.toList();
 
-    print(map);
   }
+
+    List getKeys(){
+    calculateSpendTotal();
+    categorySpendSummary();
+    return _keys;
+  }
+
+  List getValues(){
+    calculateSpendTotal();
+    categorySpendSummary();
+
+    return _values;
+    }
+
+
+
+
+
+
 }
