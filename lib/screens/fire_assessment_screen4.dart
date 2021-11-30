@@ -1,20 +1,20 @@
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
-class WhatIsFireScreen extends StatefulWidget {
-  const WhatIsFireScreen({Key? key}) : super(key: key);
+class FireAssessmentScreen4 extends StatefulWidget {
+  const FireAssessmentScreen4({Key? key}) : super(key: key);
 
   @override
-  _WhatIsFireScreenState createState() => _WhatIsFireScreenState();
+  _FireAssessmentScreen4State createState() => _FireAssessmentScreen4State();
 }
 
-class _WhatIsFireScreenState extends State<WhatIsFireScreen> {
+class _FireAssessmentScreen4State extends State<FireAssessmentScreen4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        title: const Text('What is F.I.R.E?'),
+        title: const Text('F.I.R.E Assessment'),
         backgroundColor: const Color(0xFF2CDB30),
       ),
     );

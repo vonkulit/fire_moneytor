@@ -1,3 +1,4 @@
+import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 class MonitorScreen extends StatefulWidget {
@@ -11,6 +12,7 @@ class _MonitorScreenState extends State<MonitorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         title: const Text('Monitor'),
         backgroundColor: const Color(0xFF2CDB30),
@@ -28,24 +30,24 @@ class _MonitorScreenState extends State<MonitorScreen> {
             SizedBox(
               width: 290,
               child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your monthly expenses here.',
-                    contentPadding: EdgeInsets.all(20.0),
-                  ),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter your monthly expenses here.',
+                  contentPadding: EdgeInsets.all(20.0),
+                ),
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: SizedBox(
-        width: 70.0,
-        height: 50.0,
+        width: 90.0,
+        height: 40.0,
         child: FloatingActionButton(
           onPressed: () {},
           backgroundColor: const Color(0xFF2CDB30),
           shape: const BeveledRectangleBorder(
-            borderRadius: BorderRadius.zero,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: const Text(
             'Continue',
@@ -55,7 +57,6 @@ class _MonitorScreenState extends State<MonitorScreen> {
     );
   }
 }
-
 
 /* Savings
 class _MonitorScreenState extends State<MonitorScreen> {
@@ -73,7 +74,7 @@ class _MonitorScreenState extends State<MonitorScreen> {
             Text(
               '''
               Input your savings here.
-              
+
               ''',
             ),
             SizedBox(

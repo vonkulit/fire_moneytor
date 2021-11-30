@@ -1,10 +1,9 @@
+import 'package:fire_moneytor/screens/fire_assessment_screen1.dart';
 import '../widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -16,7 +15,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('F.I.R.E Assessment'),
         backgroundColor: const Color(0xFF2CDB30),
       ),
       body: Center(
@@ -30,13 +29,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: SizedBox(
-        width: 70.0,
-        height: 50.0,
+        width: 90.0,
+        height: 40.0,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const FireAssessmentScreen()));
+          },
           backgroundColor: const Color(0xFF2CDB30),
           shape: const BeveledRectangleBorder(
-            borderRadius: BorderRadius.zero,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: const Text(
             'Continue',

@@ -1,4 +1,5 @@
 import 'package:fire_moneytor/functions/spending_functions.dart';
+import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -14,34 +15,36 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   late List<GDPData> _chartData;
 
   @override
-  void initState(){
+  void initState() {
     _chartData = getChartData();
-        super.initState();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[50],
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         title: const Text('Dashboard'),
+        backgroundColor: const Color(0xFF2CDB30),
       ),
       body: Center(
         child: ListView(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.all(30),
+              margin: const EdgeInsets.all(30),
               height: 140,
               decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
                     color: Colors.black,
                   ),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Row(
                       children: const [
                         Expanded(
@@ -79,20 +82,20 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               ),
             ),
             Container(
-                margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                margin: const EdgeInsets.fromLTRB(30, 0, 30, 30),
                 height: 400,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(
                       color: Colors.black,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: Row(
-                        children:  [
+                        children: [
                           Expanded(
                               child: AutoSizeText('Expenses Overview',
                                   style: TextStyle(
@@ -101,7 +104,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center,
                                   maxLines: 1)),
-
                         ],
                       ),
                     ),
@@ -112,44 +114,42 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       indent: 100,
                       endIndent: 100,
                     ),
-                     Expanded(
+                    Expanded(
                         child: AutoSizeText(' Total: ₱10',
                             style: TextStyle(
-                              color: Colors.grey[850],
+                                color: Colors.grey[850],
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.right,
                             maxLines: 1)),
-
-
                     SfCircularChart(
-                    legend: Legend(isVisible: true),
-                    series: <CircularSeries>[
-                      PieSeries<GDPData, String>(
-                        dataSource: _chartData,
-                        xValueMapper: (GDPData data,_) => data.continent,
-                        yValueMapper: (GDPData data,_) => data.gdp,
-                        dataLabelSettings: DataLabelSettings(isVisible: true)
-                      )
-                    ], )
-
+                      legend: Legend(isVisible: true),
+                      series: <CircularSeries>[
+                        PieSeries<GDPData, String>(
+                            dataSource: _chartData,
+                            xValueMapper: (GDPData data, _) => data.continent,
+                            yValueMapper: (GDPData data, _) => data.gdp,
+                            dataLabelSettings:
+                                const DataLabelSettings(isVisible: true))
+                      ],
+                    )
                   ],
                 )),
             Container(
-                margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                margin: const EdgeInsets.fromLTRB(30, 0, 30, 30),
                 height: 400,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(
                       color: Colors.black,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: Row(
-                        children:  [
+                        children: [
                           Expanded(
                               child: AutoSizeText('Savings Overview',
                                   style: TextStyle(
@@ -158,7 +158,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center,
                                   maxLines: 1)),
-
                         ],
                       ),
                     ),
@@ -177,36 +176,34 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.right,
                             maxLines: 1)),
-
-
                     SfCircularChart(
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
                             dataSource: _chartData,
-                            xValueMapper: (GDPData data,_) => data.continent,
-                            yValueMapper: (GDPData data,_) => data.gdp,
-                            dataLabelSettings: DataLabelSettings(isVisible: true)
-                        )
-                      ], )
-
+                            xValueMapper: (GDPData data, _) => data.continent,
+                            yValueMapper: (GDPData data, _) => data.gdp,
+                            dataLabelSettings:
+                                const DataLabelSettings(isVisible: true))
+                      ],
+                    )
                   ],
                 )),
             Container(
-                margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                margin: const EdgeInsets.fromLTRB(30, 0, 30, 30),
                 height: 400,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(
                       color: Colors.black,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: Row(
-                        children:  [
+                        children: [
                           Expanded(
                               child: AutoSizeText('Work/Income Overview',
                                   style: TextStyle(
@@ -215,7 +212,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center,
                                   maxLines: 1)),
-
                         ],
                       ),
                     ),
@@ -234,48 +230,41 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.right,
                             maxLines: 1)),
-
-
                     SfCircularChart(
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
                             dataSource: _chartData,
-                            xValueMapper: (GDPData data,_) => data.continent,
-                            yValueMapper: (GDPData data,_) => data.gdp,
-                            dataLabelSettings: DataLabelSettings(isVisible: true)
-                        )
-                      ], )
-
+                            xValueMapper: (GDPData data, _) => data.continent,
+                            yValueMapper: (GDPData data, _) => data.gdp,
+                            dataLabelSettings:
+                                const DataLabelSettings(isVisible: true))
+                      ],
+                    )
                   ],
                 ))
-
           ],
         ),
       ),
     );
   }
-  List<GDPData> getChartData(){
-    List ourKeys = new SpendingList().getKeys();
 
-    List ourValues = new SpendingList().getValues();
+  List<GDPData> getChartData() {
+    List ourKeys = SpendingList().getKeys();
 
-      List<GDPData> chartData = [
+    List ourValues = SpendingList().getValues();
 
-      ];
-    for(int i = 0; i < ourValues.length; i++){
+    List<GDPData> chartData = [];
+    for (int i = 0; i < ourValues.length; i++) {
       chartData.add(GDPData(ourKeys[i], ourValues[i]));
     }
 
     return chartData;
-
   }
 }
 
 class GDPData {
-GDPData(this.continent, this.gdp);
- final String continent;
- final int gdp;
-
-
+  GDPData(this.continent, this.gdp);
+  final String continent;
+  final int gdp;
 }

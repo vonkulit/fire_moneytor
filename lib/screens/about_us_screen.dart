@@ -1,3 +1,4 @@
+import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -11,8 +12,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         title: const Text('About Us'),
+        backgroundColor: const Color(0xFF2CDB30),
       ),
     );
   }
