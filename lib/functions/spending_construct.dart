@@ -4,3 +4,5 @@ class Spendings {
   final String category;
   final double price;
 }
+
+
