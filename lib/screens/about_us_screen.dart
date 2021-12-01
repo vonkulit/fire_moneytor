@@ -14,7 +14,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        title: const Text('About Us'),
+        title: const Text(
+          'About Us',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+        ),
         backgroundColor: const Color(0xFF2CDB30),
       ),
     );

@@ -26,7 +26,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       backgroundColor: Colors.green[50],
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text(
+          'Dashboard',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+        ),
         backgroundColor: const Color(0xFF2CDB30),
       ),
       body: Center(

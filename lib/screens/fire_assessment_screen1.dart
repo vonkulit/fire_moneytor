@@ -18,48 +18,73 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        title: const Text('F.I.R.E Assessment'),
+        title: const Text(
+          'F.I.R.E Assessment',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+        ),
         backgroundColor: const Color(0xFF2CDB30),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              '''
-              About Monthly Expenses
-              
-              ''',
-            ),
-            SizedBox(
-              width: 290,
-              child: TextField(
-                onChanged: (value) {
-                  input = value as int;
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.blueGrey[10],
-                  border: const OutlineInputBorder(),
-                  labelText: 'Enter Expenses',
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
-                  ),
-                  contentPadding: const EdgeInsets.all(20.0),
-                ),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
+      body: ListView(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
+            child: Text(
+              'About Monthly Expenses',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[700],
               ),
             ),
-            const Text('''
-                   
-        If you don't know you can enter an estimate or a dummy value and we will help you get the exact value later with our monitoring features
-                    
-                    ''')
-          ],
-        ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 20, bottom: 10),
+            child: Text(
+              'Enter Expenses',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w900,
+                color: Colors.grey[700],
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(right: 170, left: 20),
+            child: TextField(
+              onChanged: (value) {
+                input = value as int;
+              },
+              decoration: const InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+                labelText: 'Enter Amount',
+                labelStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                contentPadding: EdgeInsets.all(10.0),
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 20, right: 100),
+            child: Text(
+              "If you don't know you can enter an estimate or a dummy value and we will help you get the exact value later with our monitoring features",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[700],
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: SizedBox(
         width: 90.0,

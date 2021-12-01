@@ -1,8 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/functions/calcbrain.dart';
-import 'package:fire_moneytor/screens/result_screen.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +54,7 @@ class _MonitorScreenState extends State<MonitorScreen> {
               item: itemName.value.text,
               category: itemType.value.text,
               price: double.parse(itemPrice.value.text)));
-      _key.currentState!.insertItem(0, duration: Duration(seconds: 1));
+      _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
       print(_items);
       itemName.clear();
       itemPrice.clear();
@@ -83,7 +81,6 @@ class _MonitorScreenState extends State<MonitorScreen> {
               ),
             ),
           );
-          ;
         },
       );
 
@@ -94,7 +91,10 @@ class _MonitorScreenState extends State<MonitorScreen> {
       backgroundColor: Colors.green[50],
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        title: const Text('Expenses Monitor'),
+        title: const Text(
+          'Expenses Monitor',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+        ),
         backgroundColor: const Color(0xFF2CDB30),
       ),
       body: ListView(
@@ -201,7 +201,7 @@ class _MonitorScreenState extends State<MonitorScreen> {
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(40, 20, 40, 10),
+            margin: const EdgeInsets.fromLTRB(40, 20, 40, 10),
             child: Row(
               children: const [
                 Expanded(
