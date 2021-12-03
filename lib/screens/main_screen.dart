@@ -21,15 +21,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         backgroundColor: const Color(0xFF2CDB30),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'explanation about FIRE',
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            width: 150,
+            height: 150,
+            child: Image.asset(
+              'images/try1.gif',
             ),
-          ],
-        ),
+          ),
+          const Text(
+            'explanation about FIRE',
+          ),
+        ],
       ),
       floatingActionButton: SizedBox(
         width: 90.0,
