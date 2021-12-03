@@ -20,6 +20,22 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         ),
         backgroundColor: const Color(0xFF2CDB30),
       ),
+      body: Center(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(const Color(0xFF2CDB30)),
+              ),
+              child: const Text('Start Fire Assessment'),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

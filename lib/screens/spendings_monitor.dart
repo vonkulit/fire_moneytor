@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 
 import 'package:fire_moneytor/functions/spending_construct.dart';
 
-class MonitorScreen extends StatefulWidget {
-  const MonitorScreen({Key? key}) : super(key: key);
+class SpendingMonitorScreen extends StatefulWidget {
+  const SpendingMonitorScreen({Key? key}) : super(key: key);
 
   @override
-  _MonitorScreenState createState() => _MonitorScreenState();
+  _SpendingMonitorScreenState createState() => _SpendingMonitorScreenState();
 }
 
-class _MonitorScreenState extends State<MonitorScreen> {
+class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
   @override
   Widget build(BuildContext context) {
     final _spendingController = TextEditingController();
