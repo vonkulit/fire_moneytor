@@ -17,14 +17,14 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const DrawerWidget(),
-      appBar: AppBar(
+        appBar: AppBar(
         title: const Text(
           'F.I.R.E Assessment',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
         ),
         backgroundColor: const Color(0xFF2CDB30),
-      ),
-      body: ListView(
+        ),
+        body: ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
@@ -83,9 +83,9 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
                 color: Colors.grey[700],
               ),
             ),
-          ),
+                  ),
         ],
-      ),
+                ),
       floatingActionButton: SizedBox(
         width: 90.0,
         height: 40.0,
@@ -97,7 +97,7 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
           backgroundColor: const Color(0xFF2CDB30),
           shape: const BeveledRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
+              ),
           child: const Text(
             'Continue',
           ),

@@ -17,9 +17,9 @@ class _WhatIsFireScreenState extends State<WhatIsFireScreen> {
         title: const Text(
           'What is F.I.R.E?',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
-        ),
+              ),
         backgroundColor: const Color(0xFF2CDB30),
-      ),
+            ),
     );
   }
 }
