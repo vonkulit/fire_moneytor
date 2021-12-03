@@ -4,7 +4,11 @@ class SpendingList {
   List<Spendings> listBank = [
     Spendings(item: "Shampoo", category: "Bath", price: 200.0),
     Spendings(item: "Foods", category: "Food", price: 1932.54),
-    Spendings(item: "Microphone", category: "Computer", price: 4325.21),
+    Spendings(
+      item: "Microphone",
+      category: "Computer",
+      price: 4325.21,
+    ),
     Spendings(item: "Cat food", category: "Food", price: 538.00),
     Spendings(item: "Meralco", category: "Bills", price: 2350.123),
   ];
@@ -13,7 +17,13 @@ class SpendingList {
   static List _keys = [];
 
   void addList(String name, String category, double price) {
-    listBank.insert(0, Spendings(item: name, category: category, price: price));
+    listBank.insert(
+        0,
+        Spendings(
+          item: name,
+          category: category,
+          price: price,
+        ));
   }
 
   double calculateSpendTotal() {

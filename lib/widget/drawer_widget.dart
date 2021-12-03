@@ -1,8 +1,10 @@
 import 'package:fire_moneytor/screens/about_us_screen.dart';
 import 'package:fire_moneytor/screens/dashboard_screen.dart';
 import 'package:fire_moneytor/screens/main_screen.dart';
-import 'package:fire_moneytor/screens/monitor_screen.dart';
+import 'package:fire_moneytor/screens/savings_monitor.dart';
+import 'package:fire_moneytor/screens/spendings_monitor.dart';
 import 'package:fire_moneytor/screens/what_is_fire_screen.dart';
+import 'package:fire_moneytor/screens/work_income_monitor.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -14,6 +16,8 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final padding = EdgeInsets.zero;
+  List<String> _locations = ['A', 'B', 'C', 'D']; // Option 2
+  String _selectedLocation = ''; // Option 2
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             padding: padding,
             child: Column(
               children: [
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
                 buildMenuItem(
                   text: 'Dashboard',
                   icon: Icons.space_dashboard,
@@ -55,7 +59,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         builder: (context) => const DashBoardScreen()));
                   },
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
                 buildMenuItem(
                   text: 'F.I.R.E Assessment',
                   icon: Icons.local_fire_department,
@@ -64,19 +68,50 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         builder: (context) => const MyHomePage()));
                   },
                 ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20, top: 10),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'MONITOR',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w400),
+                      )),
+                ),
                 const SizedBox(height: 16),
                 buildMenuItem(
-                  text: 'Monitor',
-                  icon: Icons.query_stats,
+                  text: 'Spendings',
+                  icon: Icons.attach_money,
                   onClicked: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const MonitorScreen()));
+                        builder: (context) => const SpendingMonitorScreen()));
                   },
                 ),
                 const SizedBox(height: 16),
                 buildMenuItem(
+                  text: 'Savings',
+                  icon: Icons.savings,
+                  onClicked: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SavingMonitorScreen()));
+                  },
+                ),
+                const SizedBox(height: 16),
+                buildMenuItem(
+                  text: 'Work/Income',
+                  icon: Icons.work,
+                  onClicked: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const WorkIncomeMonitorScreen()));
+                  },
+                ),
+                const Divider(
+                  thickness: 2,
+                ),
+                const SizedBox(height: 16),
+                buildMenuItem(
                   text: 'What is F.I.R.E',
-                  icon: Icons.device_unknown,
+                  icon: Icons.lightbulb,
                   onClicked: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const WhatIsFireScreen()));

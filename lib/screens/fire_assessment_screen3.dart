@@ -121,13 +121,12 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                       children: const <Widget>[
                         Padding(
                           padding: EdgeInsets.only(left: 20, top: 20),
-                          child:
-                              Text('Wassabiiiiiiiiiiiiiiiiii\n\n\n\n\n\n aaaa'),
+                          child: Text('Wassabiiiiiiiiiiiiiiiiii\n\n\n\n\n\n '),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding: const EdgeInsets.only(right: 20, top: 130),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: ElevatedButton(
