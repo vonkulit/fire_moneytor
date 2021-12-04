@@ -25,6 +25,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
     itemName.dispose();
     itemType.dispose();
     itemPrice.dispose();
+    super.dispose();
   }
 
 // Items in the list
@@ -100,7 +101,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
           child: const Card(
             color: Colors.red,
             child: ListTile(
-              title: Center(child: Text("Deleted",style: TextStyle(color: Colors.white),)),
+              title: Center(child: Text("Removed",style: TextStyle(color: Colors.white),)),
             ),
           ),
         );
@@ -129,284 +130,308 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
     return const Icon(Icons.add);
   }
 
-  decide(){
+  Future<bool> customBackButton() async{
+    if(isSwitch) {
+      setState(() {
+        isSwitch = !isSwitch;
+        for (int i = 0; i < _items.length; i++) {
+          paints[i].checkbox = !paints[i].checkbox;
+          paints[i].selected = false;
+        }
+        _number.clear();
+        print(_number);
 
+      });
+    }else{
+      return true;
+    }
+
+    print("Backbutton Recognized");
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green[50],
-      drawer: const DrawerWidget(),
-      appBar: AppBar(
-        title: const Text('Monitoring',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),),
-        backgroundColor: const Color(0xFF2CDB30),
-      ),
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-            child: Text('Expenses List',
-                style: TextStyle(
-                    color: Colors.grey[700],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30)),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            height: 460,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: Colors.black,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
-            child: Column(
-              children: [
-                Container(
-                  child: ListTile(
-                    leading: Visibility(
-                      visible: false,
-                      child: Icon(Icons.circle_outlined),
+    return WillPopScope(
+      onWillPop: customBackButton,
+      child: Scaffold(
+        backgroundColor: Colors.green[50],
+        drawer: const DrawerWidget(),
+        appBar: AppBar(
+          title: const Text('Monitoring',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),),
+          backgroundColor: const Color(0xFF2CDB30),
+        ),
+        body: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+              child: Text('Expenses List',
+                  style: TextStyle(
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30)),
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              height: 460,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
+              child: Column(
+                children: [
+                  Container(
+                    child: ListTile(
+                      leading: Visibility(
+                        visible: false,
+                        child: Icon(Icons.circle_outlined),
 
-                    ),
-                    minLeadingWidth: 10,
-                    contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, //Center Row contents horizontally,
-                      children: [
-                        const AutoSizeText(
-                          'Name',
-                          textAlign: TextAlign.left,
-                          maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      minLeadingWidth: 10,
+                      contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, //Center Row contents horizontally,
+                        children: [
+                          const AutoSizeText(
+                            'Name',
+                            textAlign: TextAlign.left,
+                            maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            width: 70,
+                            child: const Center(
+                                child: AutoSizeText('Type', maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),)),
+                          ),
+                        ],
+                      ),
+                      trailing: Container(
+                        width: 60,
+                        child: const AutoSizeText(
+                          'Price',
+                          maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                         ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          width: 70,
-                          child: const Center(
-                              child: AutoSizeText('Type', maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),)),
-                        ),
-                      ],
-                    ),
-                    trailing: Container(
-                      width: 60,
-                      child: const AutoSizeText(
-                        'Price',
-                        maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                       ),
                     ),
                   ),
-                ),
-                const Divider(
-                  color: Colors.black,
-                  height: 0,
-                  thickness: 1,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                Expanded(
-                  child: Card(
-                    child: AnimatedList(
-                      key: _key,
-                      initialItemCount: 0,
-                      itemBuilder: (_, index, animation) {
-                        return SizeTransition(
-                          key: UniqueKey(),
-                          sizeFactor: animation,
-                          child: ListTile(
-                            leading: !(paints[index].selected)
-                                ? Visibility(
-                                visible: paints[index].checkbox,
-                                child: Icon(Icons.circle_outlined))
-                                : Icon(Icons.check_circle_rounded),
-                            minLeadingWidth: 0,
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .spaceBetween, //Center Row contents horizontally,
-                              children: [
-                                AutoSizeText(
-                                  _items[index].item,
-                                  textAlign: TextAlign.left,
-                                  maxLines: 1,
-                                ),
-                                Container(
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                      ),
-                                      borderRadius:
-                                      const BorderRadius.all(Radius.circular(100))),
-                                  child: Center(
-                                      child:
-                                      AutoSizeText(_items[index].category, maxLines: 1)),
-                                ),
-                              ],
-                            ),
-                            trailing: Container(
-                              width: 60,
-                              child: AutoSizeText(
-                                '₱' + _items[index].price.toString(),
-                                maxLines: 1,
-
+                  const Divider(
+                    color: Colors.black,
+                    height: 0,
+                    thickness: 1,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                  Expanded(
+                    child: Card(
+                      child: AnimatedList(
+                        key: _key,
+                        initialItemCount: 0,
+                        itemBuilder: (_, index, animation) {
+                          return SizeTransition(
+                            key: UniqueKey(),
+                            sizeFactor: animation,
+                            child: ListTile(
+                              leading: !(paints[index].selected)
+                                  ? Visibility(
+                                  visible: paints[index].checkbox,
+                                  child: Icon(Icons.circle_outlined))
+                                  : Icon(Icons.check_circle_rounded),
+                              minLeadingWidth: 0,
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween, //Center Row contents horizontally,
+                                children: [
+                                  AutoSizeText(
+                                    _items[index].item,
+                                    textAlign: TextAlign.left,
+                                    maxLines: 1,
+                                  ),
+                                  Container(
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        border: Border.all(
+                                          color: Colors.black,
+                                        ),
+                                        borderRadius:
+                                        const BorderRadius.all(Radius.circular(100))),
+                                    child: Center(
+                                        child:
+                                        AutoSizeText(_items[index].category, maxLines: 1)),
+                                  ),
+                                ],
                               ),
+                              trailing: Container(
+                                width: 60,
+                                child: AutoSizeText(
+                                  '₱' + _items[index].price.toString(),
+                                  maxLines: 1,
+
+                                ),
+                              ),
+                              onTap: () {
+                                if (paints[index].checkbox) {
+                                  setState(
+                                        () {
+                                      paints[index].selected = !paints[index].selected;
+                                    },
+                                  );
+                                  if (_number.contains(index)) {
+                                    _number.remove(index);
+                                    print(_number);
+                                  } else {
+                                    _number.add(index);
+                                    print(_number);
+                                  }
+                                } else {}
+                                print("Selected: " + paints[index].selected.toString());
+                                print("Vsisible: " + paints[index].checkbox.toString());
+                              },
+                              selected: paints[index].checkbox,
+                              onLongPress: () {
+                                setState(() {
+                                  isSwitch = !isSwitch;
+                                  for (int i = 0; i < _items.length; i++) {
+                                    paints[i].checkbox = !paints[i].checkbox;
+                                    paints[i].selected = false;
+                                  }
+
+                                  if(paints[index].checkbox){
+                                    paints[index].selected = true;
+                                    _number.add(index);
+                                    print(_number);
+                                  }
+
+                                });
+
+                                print("Selected: " + paints[index].selected.toString());
+                                print("Vsisible: " + paints[index].checkbox.toString());
+                              },
                             ),
-                            onTap: () {
-                              if (paints[index].checkbox) {
-                                setState(
-                                      () {
-                                    paints[index].selected = !paints[index].selected;
-                                  },
-                                );
-                                if (_number.contains(index)) {
-                                  _number.remove(index);
-                                  print(_number);
-                                } else {
-                                  _number.add(index);
-                                  print(_number);
-                                }
-                              } else {}
-                              print("Selected: " + paints[index].selected.toString());
-                              print("Vsisible: " + paints[index].checkbox.toString());
-                            },
-                            selected: paints[index].checkbox,
-                            onLongPress: () {
-                              setState(() {
-                                isSwitch = !isSwitch;
-                                for (int i = 0; i < _items.length; i++) {
-                                  paints[i].checkbox = !paints[i].checkbox;
-                                  paints[i].selected = false;
-                                }
-
-                                _number.clear();
-                              });
-
-                              print("Selected: " + paints[index].selected.toString());
-                              print("Vsisible: " + paints[index].checkbox.toString());
-                            },
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(40, 20, 40, 10),
-            child: Row(
-              children: const [
-                Expanded(
-                    child: AutoSizeText('Total: ',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,
-                        maxLines: 1)),
-                Expanded(
-                    child: AutoSizeText(' ₱10',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.right,
-                        maxLines: 1)),
-              ],
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 70, 30, 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              width: 30,
-              height: 30,
-              child: FloatingActionButton(
-                  backgroundColor: button_color(),
-                  shape: const BeveledRectangleBorder(
-                      borderRadius: BorderRadius.zero),
-                  child: button_icon(),
-                  onPressed: () {
-                    if (isSwitch) {
-                      remover();
-                    } else {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: const Text('Add Item (Monthly Expense)'),
-                          content: Container(
-                            height: 200,
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  height: 50,
-                                  child: TextField(
-                                    controller: itemName,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Name',
-                                      border: OutlineInputBorder(),
-                                      hintText: 'ex. Globe/Smart/BDO/Food',
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 50,
-                                  child: TextField(
-                                    controller: itemType,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Type',
-                                      border: OutlineInputBorder(),
-                                      hintText:
-                                      'ex. Food/Water Bill/Electric Bill',
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 50,
-                                  child: TextField(
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                    keyboardType: TextInputType.number,
-                                    controller: itemPrice,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Price',
-                                      border: OutlineInputBorder(),
-                                      hintText: 'ex. 1000 / 100/ 10',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () { Navigator.pop(context, 'Cancel');
-                              itemName.clear();
-                              itemPrice.clear();
-                              itemType.clear();
-
-                              } ,
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: _addItem,
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  }),
+            Container(
+              margin: EdgeInsets.fromLTRB(40, 20, 40, 10),
+              child: Row(
+                children: const [
+                  Expanded(
+                      child: AutoSizeText('Total: ',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.left,
+                          maxLines: 1)),
+                  Expanded(
+                      child: AutoSizeText(' ₱10',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.right,
+                          maxLines: 1)),
+                ],
+              ),
             ),
           ],
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 70, 30, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: FloatingActionButton(
+                    backgroundColor: button_color(),
+                    shape: const BeveledRectangleBorder(
+                        borderRadius: BorderRadius.zero),
+                    child: button_icon(),
+                    onPressed: () {
+                      if (isSwitch) {
+                        remover();
+                      } else {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Add Item (Monthly Expense)'),
+                            content: Container(
+                              height: 200,
+                              width: 150,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    height: 50,
+                                    child: TextField(
+                                      controller: itemName,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Name',
+                                        border: OutlineInputBorder(),
+                                        hintText: 'ex. Globe/Smart/BDO/Food',
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 50,
+                                    child: TextField(
+                                      controller: itemType,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Type',
+                                        border: OutlineInputBorder(),
+                                        hintText:
+                                        'ex. Food/Electric BIll/Internet',
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 50,
+                                    child: TextField(
+                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      keyboardType: TextInputType.number,
+                                      controller: itemPrice,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Price',
+                                        border: OutlineInputBorder(),
+                                        hintText: 'ex. 10 / 100 / 1000',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () { Navigator.pop(context, 'Cancel');
+                                itemName.clear();
+                                itemPrice.clear();
+                                itemType.clear();
+
+                                } ,
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: _addItem,
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    }),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
     );
   }
 }

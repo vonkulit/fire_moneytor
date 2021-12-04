@@ -80,7 +80,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
                 const SizedBox(height: 16),
                 buildMenuItem(
-                  text: 'Spendings',
+                  text: 'Expenses',
                   icon: Icons.attach_money,
                   onClicked: () {
                     Navigator.of(context).push(MaterialPageRoute(
