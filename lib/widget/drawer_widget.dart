@@ -1,5 +1,6 @@
 import 'package:fire_moneytor/screens/about_us_screen.dart';
 import 'package:fire_moneytor/screens/dashboard_screen.dart';
+import 'package:fire_moneytor/screens/fire_assessment_screen1.dart';
 import 'package:fire_moneytor/screens/main_screen.dart';
 import 'package:fire_moneytor/screens/savings_monitor.dart';
 import 'package:fire_moneytor/screens/spendings_monitor.dart';
@@ -28,7 +29,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             margin: EdgeInsets.zero,
             padding: EdgeInsets.zero,
             decoration: const BoxDecoration(
-              color: Color(0xFF2CDB30),
+              image: DecorationImage(
+                  image: AssetImage(
+                    'images/Header_Drawer_Widget.jpg',
+                  ),
+                  fit: BoxFit.cover),
             ),
             child: Stack(
               children: const <Widget>[
@@ -36,10 +41,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   bottom: 12.0,
                   left: 16.0,
                   child: Text(
-                    'HEY!',
+                    'Welcome!',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 40.0,
+                        fontSize: 20.0,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -55,8 +60,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   text: 'Dashboard',
                   icon: Icons.space_dashboard,
                   onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const DashBoardScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const DashBoardScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
                 const SizedBox(height: 16),
@@ -64,8 +72,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   text: 'F.I.R.E Assessment',
                   icon: Icons.local_fire_department,
                   onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const MyHomePage()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const FireAssessmentScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
                 const Padding(
@@ -83,8 +94,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   text: 'Expenses',
                   icon: Icons.attach_money,
                   onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SpendingMonitorScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const SpendingMonitorScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
                 const SizedBox(height: 16),
@@ -92,8 +106,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   text: 'Savings',
                   icon: Icons.savings,
                   onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SavingMonitorScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const SavingMonitorScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
                 const SizedBox(height: 16),
@@ -101,8 +118,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   text: 'Work/Income',
                   icon: Icons.work,
                   onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const WorkIncomeMonitorScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const WorkIncomeMonitorScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
                 const Divider(
@@ -113,8 +134,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   text: 'What is F.I.R.E',
                   icon: Icons.lightbulb,
                   onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const WhatIsFireScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const WhatIsFireScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
                 const SizedBox(height: 16),
@@ -122,8 +146,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   text: 'About us',
                   icon: Icons.people_sharp,
                   onClicked: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AboutUsScreen()));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const AboutUsScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
               ],

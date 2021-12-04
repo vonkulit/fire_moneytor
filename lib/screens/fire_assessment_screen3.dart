@@ -4,14 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FireAssessmentScreen3 extends StatefulWidget {
-  const FireAssessmentScreen3({Key? key}) : super(key: key);
+  final String textFieldExpenses;
+  final String textFieldSavings;
+
+  const FireAssessmentScreen3(
+      {Key? key,
+      required this.textFieldExpenses,
+      required this.textFieldSavings})
+      : super(key: key);
 
   @override
   _FireAssessmentScreen3State createState() => _FireAssessmentScreen3State();
 }
 
 class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
-  int input = 0;
+  final textFieldIncome = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,6 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
           'F.I.R.E Assessment',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
         ),
-        backgroundColor: const Color(0xFF2CDB30),
       ),
       body: ListView(
         children: <Widget>[
@@ -51,9 +57,7 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
           Container(
             margin: const EdgeInsets.only(right: 170, left: 20),
             child: TextField(
-              onChanged: (value) {
-                input = value as int;
-              },
+              controller: textFieldIncome,
               decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -107,7 +111,7 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
               ),
               content: Container(
                 width: 700,
-                height: 350,
+                height: 370,
                 decoration: const BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Colors.white,
@@ -118,15 +122,33 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                 child: Column(
                   children: <Widget>[
                     Row(
-                      children: const <Widget>[
+                      children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 20, top: 20),
-                          child: Text('Wassabiiiiiiiiiiiiiiiiii\n\n\n\n\n\n '),
+                          padding: const EdgeInsets.only(left: 20, top: 25),
+                          child: SizedBox(
+                            child: Text(
+                              'With your current data\n'
+                              'you have 43 years to reach\n'
+                              'your \$1,000,000 goal\n'
+                              'for retirement. You can\n'
+                              'further bring it closer by\n'
+                              'adding more to your inv.\n'
+                              'saving, decrease your\n'
+                              'monthly expenses, and\n'
+                              'look for more side hustles.\n\n'
+                              'GOOD LUCK FUTURE\n'
+                              'MILLIONAIRE!',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey[700]),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 20, top: 130),
+                      padding: const EdgeInsets.only(right: 20, top: 10),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: ElevatedButton(
@@ -139,7 +161,7 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                                       borderRadius: BorderRadius.circular(10))),
                             ),
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>

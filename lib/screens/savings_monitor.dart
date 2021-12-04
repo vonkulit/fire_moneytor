@@ -6,6 +6,7 @@ import 'package:fire_moneytor/screens/result_screen.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fire_moneytor/functions/spending_construct.dart';
+
 class SavingMonitorScreen extends StatefulWidget {
   const SavingMonitorScreen({Key? key}) : super(key: key);
 
@@ -14,8 +15,6 @@ class SavingMonitorScreen extends StatefulWidget {
 }
 
 class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
-
-
   final itemName = TextEditingController();
   final itemType = TextEditingController();
   final itemPrice = TextEditingController();
@@ -30,7 +29,6 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
 // Items in the list
   final _items = [];
   List _number = [];
-
 
   List<Paint> paints = <Paint>[
     Paint(1, 'Red', Colors.red),
@@ -94,13 +92,17 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
   void _removeItem(int index) {
     _key.currentState!.removeItem(
       index,
-          (_, animation) {
+      (_, animation) {
         return SizeTransition(
           sizeFactor: animation,
           child: const Card(
             color: Colors.red,
             child: ListTile(
-              title: Center(child: Text("Removed",style: TextStyle(color: Colors.white),)),
+              title: Center(
+                  child: Text(
+                "Removed",
+                style: TextStyle(color: Colors.white),
+              )),
             ),
           ),
         );
@@ -111,6 +113,7 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
 
     print(_items);
   }
+
   bool isSwitch = false;
   Color button_color() {
     if (isSwitch) {
@@ -119,6 +122,7 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
       return Colors.green;
     }
   }
+
   Icon button_icon() {
     if (isSwitch) {
       return const Icon(Icons.delete);
@@ -129,8 +133,8 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
     return const Icon(Icons.add);
   }
 
-  Future<bool> customBackButton() async{
-    if(isSwitch) {
+  Future<bool> customBackButton() async {
+    if (isSwitch) {
       setState(() {
         isSwitch = !isSwitch;
         for (int i = 0; i < _items.length; i++) {
@@ -139,9 +143,8 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
         }
         _number.clear();
         print(_number);
-
       });
-    }else{
+    } else {
       return true;
     }
 
@@ -157,9 +160,11 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
         backgroundColor: Colors.green[50],
         drawer: const DrawerWidget(),
         appBar: AppBar(
-          title: const Text('Monitoring',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),),
-          backgroundColor: !isSwitch ? Color(0xFF2CDB30) : Colors.red,
+          title: const Text(
+            'Monitoring',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+          ),
+          backgroundColor: !isSwitch ? const Color(0xFF2CDB30) : Colors.red,
         ),
         body: ListView(
           children: <Widget>[
@@ -184,11 +189,9 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                 children: [
                   Container(
                     child: ListTile(
-
                       leading: Visibility(
                         visible: false,
                         child: Icon(Icons.circle_outlined),
-
                       ),
                       minLeadingWidth: 10,
                       contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -199,13 +202,18 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                           const AutoSizeText(
                             'Name',
                             textAlign: TextAlign.left,
-                            maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
                             width: 70,
                             child: const Center(
-                                child: AutoSizeText('Type', maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),)),
+                                child: AutoSizeText(
+                              'Type',
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )),
                           ),
                         ],
                       ),
@@ -213,7 +221,9 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                         width: 60,
                         child: const AutoSizeText(
                           'Price',
-                          maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
                         ),
                       ),
                     ),
@@ -235,12 +245,12 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                             key: UniqueKey(),
                             sizeFactor: animation,
                             child: ListTile(
-
-                              tileColor: paints[index].selected ? Colors.grey : null,
+                              tileColor:
+                                  paints[index].selected ? Colors.grey : null,
                               leading: !(paints[index].selected)
                                   ? Visibility(
-                                  visible: paints[index].checkbox,
-                                  child: Icon(Icons.circle_outlined))
+                                      visible: paints[index].checkbox,
+                                      child: Icon(Icons.circle_outlined))
                                   : Icon(Icons.check_circle_rounded),
                               minLeadingWidth: 0,
                               title: Row(
@@ -248,7 +258,6 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                     .spaceBetween, //Center Row contents horizontally,
                                 children: [
                                   Container(
-
                                     width: 150,
                                     child: AutoSizeText(
                                       _items[index].item,
@@ -263,9 +272,14 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                         border: Border.all(
                                           color: Colors.black,
                                         ),
-                                        borderRadius:
-                                        const BorderRadius.all(Radius.circular(100))),
-                                    child: AutoSizeText(_items[index].category, maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(100))),
+                                    child: AutoSizeText(
+                                      _items[index].category,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -274,14 +288,14 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                 child: AutoSizeText(
                                   '₱' + _items[index].price.toString(),
                                   maxLines: 1,
-
                                 ),
                               ),
                               onTap: () {
                                 if (paints[index].checkbox) {
                                   setState(
-                                        () {
-                                      paints[index].selected = !paints[index].selected;
+                                    () {
+                                      paints[index].selected =
+                                          !paints[index].selected;
                                     },
                                   );
                                   if (_number.contains(index)) {
@@ -292,8 +306,10 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                     print(_number);
                                   }
                                 } else {}
-                                print("Selected: " + paints[index].selected.toString());
-                                print("Vsisible: " + paints[index].checkbox.toString());
+                                print("Selected: " +
+                                    paints[index].selected.toString());
+                                print("Vsisible: " +
+                                    paints[index].checkbox.toString());
                               },
                               onLongPress: () {
                                 setState(() {
@@ -304,16 +320,17 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                     paints[i].selected = false;
                                   }
 
-                                  if(paints[index].checkbox){
+                                  if (paints[index].checkbox) {
                                     paints[index].selected = true;
                                     _number.add(index);
                                     print(_number);
                                   }
-
                                 });
 
-                                print("Selected: " + paints[index].selected.toString());
-                                print("Vsisible: " + paints[index].checkbox.toString());
+                                print("Selected: " +
+                                    paints[index].selected.toString());
+                                print("Vsisible: " +
+                                    paints[index].checkbox.toString());
                               },
                             ),
                           );
@@ -370,7 +387,8 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                               height: 200,
                               width: 150,
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     height: 55,
@@ -390,15 +408,16 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                       decoration: const InputDecoration(
                                         labelText: 'Type',
                                         border: OutlineInputBorder(),
-                                        hintText:
-                                        'ex. Investment or Savings',
+                                        hintText: 'ex. Investment or Savings',
                                       ),
                                     ),
                                   ),
                                   SizedBox(
                                     height: 55,
                                     child: TextField(
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       keyboardType: TextInputType.number,
                                       controller: itemPrice,
                                       decoration: const InputDecoration(
@@ -413,12 +432,12 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                             ),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () { Navigator.pop(context, 'Cancel');
-                                itemName.clear();
-                                itemPrice.clear();
-                                itemType.clear();
-
-                                } ,
+                                onPressed: () {
+                                  Navigator.pop(context, 'Cancel');
+                                  itemName.clear();
+                                  itemPrice.clear();
+                                  itemType.clear();
+                                },
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
@@ -449,4 +468,3 @@ class Paint {
 
   Paint(this.id, this.title, this.colorpicture);
 }
-

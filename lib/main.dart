@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable
+
 import 'package:fire_moneytor/screens/dashboard_screen.dart';
 import 'package:fire_moneytor/screens/main_screen.dart';
+import 'package:fire_moneytor/screens/what_is_fire_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/main_screen.dart';
 
@@ -13,9 +16,7 @@ void main() {
   runApp(myApp);
 }
 
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-  // ignore: prefer_typing_uninitialized_variables
   var initialRoute;
 
   // This widget is the root of your application.
@@ -24,10 +25,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme:
+          ThemeData(appBarTheme: const AppBarTheme(color: Color(0xFF2CDB30))),
       initialRoute: initialRoute,
       routes: {
+        '/home': (context) => const WhatIsFireScreen(),
         '/': (context) => const DashBoardScreen(),
-        '/home': (context) => const MyHomePage(),
       },
     );
   }

@@ -39,7 +39,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           'Dashboard',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
         ),
-        backgroundColor: const Color(0xFF2CDB30),
       ),
       body: Center(
         child: ListView(
