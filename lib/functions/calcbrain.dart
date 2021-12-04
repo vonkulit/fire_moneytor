@@ -1,11 +1,9 @@
 class CalcBrain {
   CalcBrain(
-      {required this.age,
-      required this.monthlyexpense,
+      {required this.monthlyexpense,
       required this.savings,
       required this.monthlyincome});
 
-  final int age;
   final double monthlyexpense;
   final double savings;
   final double monthlyincome;
@@ -14,6 +12,11 @@ class CalcBrain {
 
   double _fire = 0.0;
   double _numOfYears = 0.0;
+  int _age = 0;
+
+  void setAge(int age) {
+    _age = age;
+  }
 
   void calculateAnnualExpense() {
     annualexpense = monthlyexpense * 12;
@@ -31,7 +34,7 @@ class CalcBrain {
   }
 
   double calculateFire() {
-    _fire = age + _numOfYears;
+    _fire = _age + _numOfYears;
     return _fire;
   }
 }

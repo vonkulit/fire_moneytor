@@ -1,7 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fire_moneytor/functions/bank_functions.dart';
+import 'package:fire_moneytor/functions/income_functions.dart';
 import 'package:fire_moneytor/functions/spending_functions.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -12,11 +14,18 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
+  late List<GDPData> _savingsData = [];
   late List<GDPData> _chartData;
+  late List<GDPData> _incomeData;
+  late String _displayProgress = "";
 
   @override
   void initState() {
+    _savingsData = savingsChartData();
     _chartData = getChartData();
+    _incomeData = incomeChartData();
+    _displayProgress = BankList().getTotalSavings();
+
     super.initState();
   }
 
@@ -49,7 +58,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   Container(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Row(
-                      children: const [
+                      children: [
                         Expanded(
                             child: AutoSizeText('Current Progress: ',
                                 style: TextStyle(
@@ -57,7 +66,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 textAlign: TextAlign.left,
                                 maxLines: 1)),
                         Expanded(
-                            child: AutoSizeText(' ₱10',
+                            child: AutoSizeText(_displayProgress,
                                 style: TextStyle(
                                     fontSize: 25, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.right,
@@ -183,7 +192,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-                            dataSource: _chartData,
+                            dataSource: _savingsData,
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
@@ -237,7 +246,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-                            dataSource: _chartData,
+                            dataSource: _incomeData,
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
@@ -264,6 +273,32 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
     return chartData;
   }
+}
+
+List<GDPData> incomeChartData() {
+  List ourKeys = incomeFunctions().getKeys();
+
+  List ourValues = incomeFunctions().getValues();
+
+  List<GDPData> chartData = [];
+  for (int i = 0; i < ourValues.length; i++) {
+    chartData.add(GDPData(ourKeys[i], ourValues[i]));
+  }
+
+  return chartData;
+}
+
+List<GDPData> savingsChartData() {
+  List ourKeys = BankList().getKeys();
+
+  List ourValues = BankList().getValues();
+
+  List<GDPData> chartData = [];
+  for (int i = 0; i < ourValues.length; i++) {
+    chartData.add(GDPData(ourKeys[i], ourValues[i]));
+  }
+
+  return chartData;
 }
 
 class GDPData {

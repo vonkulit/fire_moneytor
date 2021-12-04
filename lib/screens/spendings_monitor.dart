@@ -1,22 +1,20 @@
 // ignore_for_file: avoid_print
-import 'package:flutter/services.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/functions/calcbrain.dart';
-import 'package:fire_moneytor/screens/result_screen.dart';
+import 'package:fire_moneytor/functions/spending_construct.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:fire_moneytor/functions/spending_construct.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SpendingMonitorScreen extends StatefulWidget {
   const SpendingMonitorScreen({Key? key}) : super(key: key);
 
   @override
   _SpendingMonitorScreenState createState() => _SpendingMonitorScreenState();
-  }
+}
 
 class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
-
-
   final itemName = TextEditingController();
   final itemType = TextEditingController();
   final itemPrice = TextEditingController();
@@ -32,7 +30,6 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
   final _items = [];
   List _number = [];
 
-
   List<Paint> paints = <Paint>[
     Paint(1, 'Red', Colors.red),
     Paint(2, 'Blue', Colors.pink),
@@ -44,6 +41,13 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
 
   // The key of the list
   final GlobalKey<AnimatedListState> _key = GlobalKey();
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   // Add a new item to the list
   // This is trigger when the floating button is pressed
@@ -95,13 +99,17 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
   void _removeItem(int index) {
     _key.currentState!.removeItem(
       index,
-          (_, animation) {
+      (_, animation) {
         return SizeTransition(
           sizeFactor: animation,
           child: const Card(
             color: Colors.red,
             child: ListTile(
-              title: Center(child: Text("Removed",style: TextStyle(color: Colors.white),)),
+              title: Center(
+                  child: Text(
+                "Removed",
+                style: TextStyle(color: Colors.white),
+              )),
             ),
           ),
         );
@@ -112,6 +120,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
 
     print(_items);
   }
+
   bool isSwitch = false;
   Color button_color() {
     if (isSwitch) {
@@ -120,6 +129,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
       return Colors.green;
     }
   }
+
   Icon button_icon() {
     if (isSwitch) {
       return const Icon(Icons.delete);
@@ -130,8 +140,8 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
     return const Icon(Icons.add);
   }
 
-  Future<bool> customBackButton() async{
-    if(isSwitch) {
+  Future<bool> customBackButton() async {
+    if (isSwitch) {
       setState(() {
         isSwitch = !isSwitch;
         for (int i = 0; i < _items.length; i++) {
@@ -140,9 +150,8 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
         }
         _number.clear();
         print(_number);
-
       });
-    }else{
+    } else {
       return true;
     }
 
@@ -158,8 +167,10 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
         backgroundColor: Colors.green[50],
         drawer: const DrawerWidget(),
         appBar: AppBar(
-          title: const Text('Monitoring',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),),
+          title: const Text(
+            'Monitoring',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+          ),
           backgroundColor: !isSwitch ? Color(0xFF2CDB30) : Colors.red,
         ),
         body: ListView(
@@ -188,7 +199,6 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                       leading: Visibility(
                         visible: false,
                         child: Icon(Icons.circle_outlined),
-
                       ),
                       minLeadingWidth: 10,
                       contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -199,13 +209,18 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                           const AutoSizeText(
                             'Name',
                             textAlign: TextAlign.left,
-                            maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
                             width: 70,
                             child: const Center(
-                                child: AutoSizeText('Type', maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),)),
+                                child: AutoSizeText(
+                              'Type',
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )),
                           ),
                         ],
                       ),
@@ -213,7 +228,9 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                         width: 60,
                         child: const AutoSizeText(
                           'Price',
-                          maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
                         ),
                       ),
                     ),
@@ -235,12 +252,12 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                             key: UniqueKey(),
                             sizeFactor: animation,
                             child: ListTile(
-
-                              tileColor: paints[index].selected ? Colors.grey : null,
+                              tileColor:
+                                  paints[index].selected ? Colors.grey : null,
                               leading: !(paints[index].selected)
                                   ? Visibility(
-                                  visible: paints[index].checkbox,
-                                  child: Icon(Icons.circle_outlined))
+                                      visible: paints[index].checkbox,
+                                      child: Icon(Icons.circle_outlined))
                                   : Icon(Icons.check_circle_rounded),
                               minLeadingWidth: 0,
                               title: Row(
@@ -248,7 +265,6 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                     .spaceBetween, //Center Row contents horizontally,
                                 children: [
                                   Container(
-
                                     width: 150,
                                     child: AutoSizeText(
                                       _items[index].item,
@@ -263,9 +279,14 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                         border: Border.all(
                                           color: Colors.black,
                                         ),
-                                        borderRadius:
-                                        const BorderRadius.all(Radius.circular(100))),
-                                    child: AutoSizeText(_items[index].category, maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(100))),
+                                    child: AutoSizeText(
+                                      _items[index].category,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -274,14 +295,14 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                 child: AutoSizeText(
                                   '₱' + _items[index].price.toString(),
                                   maxLines: 1,
-
                                 ),
                               ),
                               onTap: () {
                                 if (paints[index].checkbox) {
                                   setState(
-                                        () {
-                                      paints[index].selected = !paints[index].selected;
+                                    () {
+                                      paints[index].selected =
+                                          !paints[index].selected;
                                     },
                                   );
                                   if (_number.contains(index)) {
@@ -292,10 +313,11 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                     print(_number);
                                   }
                                 } else {}
-                                print("Selected: " + paints[index].selected.toString());
-                                print("Vsisible: " + paints[index].checkbox.toString());
+                                print("Selected: " +
+                                    paints[index].selected.toString());
+                                print("Vsisible: " +
+                                    paints[index].checkbox.toString());
                               },
-
                               onLongPress: () {
                                 setState(() {
                                   isSwitch = !isSwitch;
@@ -304,16 +326,17 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                     paints[i].selected = false;
                                   }
 
-                                  if(paints[index].checkbox){
+                                  if (paints[index].checkbox) {
                                     paints[index].selected = true;
                                     _number.add(index);
                                     print(_number);
                                   }
-
                                 });
 
-                                print("Selected: " + paints[index].selected.toString());
-                                print("Vsisible: " + paints[index].checkbox.toString());
+                                print("Selected: " +
+                                    paints[index].selected.toString());
+                                print("Vsisible: " +
+                                    paints[index].checkbox.toString());
                               },
                             ),
                           );
@@ -370,7 +393,8 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                               height: 200,
                               width: 150,
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     height: 55,
@@ -391,14 +415,16 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                         labelText: 'Type',
                                         border: OutlineInputBorder(),
                                         hintText:
-                                        'ex. Food/Electric BIll/Internet',
+                                            'ex. Food/Electric BIll/Internet',
                                       ),
                                     ),
                                   ),
                                   SizedBox(
                                     height: 55,
                                     child: TextField(
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       keyboardType: TextInputType.number,
                                       controller: itemPrice,
                                       decoration: const InputDecoration(
@@ -413,12 +439,12 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                             ),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () { Navigator.pop(context, 'Cancel');
-                                itemName.clear();
-                                itemPrice.clear();
-                                itemType.clear();
-
-                                } ,
+                                onPressed: () {
+                                  Navigator.pop(context, 'Cancel');
+                                  itemName.clear();
+                                  itemPrice.clear();
+                                  itemType.clear();
+                                },
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
@@ -449,7 +475,6 @@ class Paint {
 
   Paint(this.id, this.title, this.colorpicture);
 }
-
 
 /*
       final _spendingController = TextEditingController();
