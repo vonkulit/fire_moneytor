@@ -298,6 +298,8 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                               },
                               onLongPress: () {
                                 setState(() {
+
+                                  _number.clear();
                                   isSwitch = !isSwitch;
                                   for (int i = 0; i < _items.length; i++) {
                                     paints[i].checkbox = !paints[i].checkbox;

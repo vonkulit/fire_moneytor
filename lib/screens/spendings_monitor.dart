@@ -319,6 +319,8 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                     paints[index].checkbox.toString());
                               },
                               onLongPress: () {
+
+                                _number.clear();
                                 setState(() {
                                   isSwitch = !isSwitch;
                                   for (int i = 0; i < _items.length; i++) {
