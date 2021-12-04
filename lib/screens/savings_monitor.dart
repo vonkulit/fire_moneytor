@@ -247,10 +247,14 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                 mainAxisAlignment: MainAxisAlignment
                                     .spaceBetween, //Center Row contents horizontally,
                                 children: [
-                                  AutoSizeText(
-                                    _items[index].item,
-                                    textAlign: TextAlign.left,
-                                    maxLines: 1,
+                                  Container(
+
+                                    width: 150,
+                                    child: AutoSizeText(
+                                      _items[index].item,
+                                      textAlign: TextAlign.left,
+                                      maxLines: 1,
+                                    ),
                                   ),
                                   Container(
                                     width: 70,
@@ -261,9 +265,7 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                         ),
                                         borderRadius:
                                         const BorderRadius.all(Radius.circular(100))),
-                                    child: Center(
-                                        child:
-                                        AutoSizeText(_items[index].category, maxLines: 1)),
+                                    child: AutoSizeText(_items[index].category, maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
                                   ),
                                 ],
                               ),
@@ -370,7 +372,7 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    height: 50,
+                                    height: 55,
                                     child: TextField(
                                       controller: itemName,
                                       decoration: const InputDecoration(
@@ -381,7 +383,7 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 50,
+                                    height: 55,
                                     child: TextField(
                                       controller: itemType,
                                       decoration: const InputDecoration(
@@ -393,7 +395,7 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 50,
+                                    height: 55,
                                     child: TextField(
                                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                       keyboardType: TextInputType.number,
