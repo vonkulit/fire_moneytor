@@ -35,10 +35,10 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
 
   List<Paint> paints = <Paint>[
     Paint(1, 'Red', Colors.red),
-    Paint(2, 'Blue', Colors.blue),
+    Paint(2, 'Blue', Colors.pink),
     Paint(3, 'Green', Colors.green),
     Paint(4, 'Lime', Colors.lime),
-    Paint(5, 'Indigo', Colors.indigo),
+    Paint(5, 'Indigo', Colors.pink),
     Paint(6, 'Yellow', Colors.yellow)
   ];
 
@@ -160,7 +160,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
         appBar: AppBar(
           title: const Text('Monitoring',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),),
-          backgroundColor: const Color(0xFF2CDB30),
+          backgroundColor: !isSwitch ? Color(0xFF2CDB30) : Colors.red,
         ),
         body: ListView(
           children: <Widget>[
@@ -235,6 +235,8 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                             key: UniqueKey(),
                             sizeFactor: animation,
                             child: ListTile(
+
+                              tileColor: paints[index].selected ? Colors.grey : null,
                               leading: !(paints[index].selected)
                                   ? Visibility(
                                   visible: paints[index].checkbox,
@@ -291,7 +293,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                 print("Selected: " + paints[index].selected.toString());
                                 print("Vsisible: " + paints[index].checkbox.toString());
                               },
-                              selected: paints[index].checkbox,
+
                               onLongPress: () {
                                 setState(() {
                                   isSwitch = !isSwitch;

@@ -159,9 +159,10 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
         backgroundColor: Colors.green[50],
         drawer: const DrawerWidget(),
         appBar: AppBar(
+
           title: const Text('Monitoring',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),),
-          backgroundColor: const Color(0xFF2CDB30),
+          backgroundColor: !isSwitch ? Color(0xFF2CDB30) : Colors.red,
         ),
         body: ListView(
           children: <Widget>[
@@ -236,6 +237,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                             key: UniqueKey(),
                             sizeFactor: animation,
                             child: ListTile(
+                              tileColor: paints[index].selected ? Colors.grey : null,
                               leading: !(paints[index].selected)
                                   ? Visibility(
                                   visible: paints[index].checkbox,
@@ -292,7 +294,6 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                 print("Selected: " + paints[index].selected.toString());
                                 print("Vsisible: " + paints[index].checkbox.toString());
                               },
-                              selected: paints[index].checkbox,
                               onLongPress: () {
                                 setState(() {
                                   isSwitch = !isSwitch;
