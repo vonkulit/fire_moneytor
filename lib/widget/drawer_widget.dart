@@ -2,7 +2,7 @@ import 'package:fire_moneytor/screens/screen_about_us.dart';
 import 'package:fire_moneytor/screens/screen_dashboard.dart';
 import 'package:fire_moneytor/screens/screen_fire_assessment1.dart';
 import 'package:fire_moneytor/screens/screen_main.dart';
-import 'package:fire_moneytor/screens/monitor_savings.dart';
+import 'package:fire_moneytor/screens/monitor_savings_invest.dart';
 import 'package:fire_moneytor/screens/monitor_spendings.dart';
 import 'package:fire_moneytor/screens/screen_wha_is_fire.dart';
 import 'package:fire_moneytor/screens/monitor_work_income.dart';

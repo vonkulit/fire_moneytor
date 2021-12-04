@@ -1,14 +1,14 @@
 import 'package:fire_moneytor/functions/construct_income.dart';
 import 'package:fire_moneytor/functions/construct_spending.dart';
-import 'package:fire_moneytor/functions/construct_bank.dart';
+import 'package:fire_moneytor/functions/construct_savings_invest.dart';
 
 class Database{
 
-  List<Bank> bankList = [
-  Bank(bankname: "BDO", savings: 24605.231),
-  Bank(bankname: "BPI", savings: 12322.7882),
-  Bank(bankname: "Bank 3", savings: 13412.32),
-  Bank(bankname: "Bank 4", savings: 5422.87),
+  List<SavingsInvestments> bankList = [
+  SavingsInvestments(name: "BDO", category: "Savings", savings: 24605.231),
+  SavingsInvestments(name: "BPI", category: "Savings", savings: 12322.7882),
+  SavingsInvestments(name: "Bank 3", category: "Investment", savings: 13412.32),
+  SavingsInvestments(name: "Bank 4", category: "Investment", savings: 5422.87),
   ];
 
   List<Income> incomeList = [
@@ -31,7 +31,7 @@ class Database{
     Spendings(item: "Meralco", category: "Bills", price: 2350.123),
   ];
 
-  List<Bank> getBankData(){
+  List<SavingsInvestments> getBankData(){
     return bankList;
   }
 

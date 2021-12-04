@@ -1,11 +1,15 @@
 // ignore_for_file: avoid_print
-import 'package:flutter/services.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/functions/calcbrain.dart';
-import 'package:fire_moneytor/screens/screen_result.dart';
-import 'package:fire_moneytor/widget/drawer_widget.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fire_moneytor/database/database.dart';
+import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:fire_moneytor/functions/construct_spending.dart';
+import 'package:fire_moneytor/functions/functions_spending.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:intl/intl.dart';
+
 
 class WorkIncomeMonitorScreen extends StatefulWidget {
   const WorkIncomeMonitorScreen({Key? key}) : super(key: key);
@@ -16,12 +20,15 @@ class WorkIncomeMonitorScreen extends StatefulWidget {
 }
 
 class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
+  NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
 
-
+  int itemCounter = 0;
   final itemName = TextEditingController();
   final itemType = TextEditingController();
   final itemPrice = TextEditingController();
+  int counter = 0;
 
+  @override
   void dispose() {
     itemName.dispose();
     itemType.dispose();
@@ -29,41 +36,85 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
     super.dispose();
   }
 
+  Database database = Database();
+  List<Spendings> data = [];
+
 // Items in the list
-  final _items = [];
   List _number = [];
 
-
   List<Paint> paints = <Paint>[
-    Paint(1, 'Red', Colors.red),
-    Paint(2, 'Blue', Colors.blue),
-    Paint(3, 'Green', Colors.green),
-    Paint(4, 'Lime', Colors.lime),
-    Paint(5, 'Indigo', Colors.indigo),
-    Paint(6, 'Yellow', Colors.yellow)
   ];
 
   // The key of the list
   final GlobalKey<AnimatedListState> _key = GlobalKey();
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    data = database.listBank;
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // do what you want here
+      display();
+    });
+
+
+
+  }
+  String total(){
+    FunctionSpending calculator = FunctionSpending();
+    return "₱" + calculator.calculateSpendTotal(data);
+  }
+
+  void display() async{
+    print(data);
+    for(int i = 0; i < data.length;i++){
+      print(data[i].item);
+      print(data[i].category);
+      print(data[i].price);
+
+      if(_key.currentState != null){
+        _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
+
+        paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
+        counter++;
+      }
+    }
+
+
+
+
+  }
 
   // Add a new item to the list
   // This is trigger when the floating button is pressed
   void _addItem() {
-    _items.insert(
-        0,
+    print(data.length);
+    paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
+    counter++;
+    data.insert(0,
         Spendings(
-            item: itemName.value.text,
+            item:itemName.value.text,
             category: itemType.value.text,
-            price: double.parse(itemPrice.value.text)));
-    _key.currentState!.insertItem(0, duration: Duration(seconds: 1));
+            price: double.parse(itemPrice.value.text
+            )));
+
+    _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
     print("Numbers: " + _number.toString());
-    print("Items: " + _items.toString());
+
+    for(int i=0;i <data.length;i++){
+      print(data[i].item);
+    }
+
+    print(data.length);
+
     itemName.clear();
     itemPrice.clear();
     itemType.clear();
 
     setState(() {
-      for (int i = 0; i < _items.length; i++) {
+      for (int i = 0; i < data.length; i++) {
         paints[i].checkbox = false;
         paints[i].selected = false;
       }
@@ -77,11 +128,11 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
     print(reverseList.toString());
     for (int i = 0; i < reverseList.length; i++) {
       print("Numbers: " + _number.toString());
-      print("Items: " + _items.toString());
+      print("Items: " + (data).toString());
       paints[reverseList[i]].selected = !paints[reverseList[i]].selected;
       _removeItem(reverseList[i]);
     }
-    for (int i = 0; i < _items.length; i++) {
+    for (int i = 0; i < (data).length; i++) {
       paints[i].checkbox = !paints[i].checkbox;
       paints[i].selected = false;
     }
@@ -102,25 +153,31 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
           child: const Card(
             color: Colors.red,
             child: ListTile(
-              title: Center(child: Text("Removed",style: TextStyle(color: Colors.white),)),
+              title: Center(
+                  child: Text(
+                    "Removed",
+                    style: TextStyle(color: Colors.white),
+                  )),
             ),
           ),
         );
         ;
       },
     );
-    _items.removeAt(index);
+    (data).removeAt(index);
 
-    print(_items);
+    print((data));
   }
+
   bool isSwitch = false;
-  Color button_color() {
+  Color buttonColor() {
     if (isSwitch) {
       return Colors.red;
     } else {
       return Colors.green;
     }
   }
+
   Icon button_icon() {
     if (isSwitch) {
       return const Icon(Icons.delete);
@@ -131,19 +188,18 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
     return const Icon(Icons.add);
   }
 
-  Future<bool> customBackButton() async{
-    if(isSwitch) {
+  Future<bool> customBackButton() async {
+    if (isSwitch) {
       setState(() {
         isSwitch = !isSwitch;
-        for (int i = 0; i < _items.length; i++) {
+        for (int i = 0; i < (data).length; i++) {
           paints[i].checkbox = !paints[i].checkbox;
           paints[i].selected = false;
         }
         _number.clear();
         print(_number);
-
       });
-    }else{
+    } else {
       return true;
     }
 
@@ -159,16 +215,17 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
         backgroundColor: Colors.green[50],
         drawer: const DrawerWidget(),
         appBar: AppBar(
-
-          title: const Text('Monitoring',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),),
+          title: const Text(
+            'Monitoring',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+          ),
           backgroundColor: !isSwitch ? Color(0xFF2CDB30) : Colors.red,
         ),
         body: ListView(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-              child: Text('Source of Income',
+              child: Text('Expenses List',
                   style: TextStyle(
                       color: Colors.grey[700],
                       fontWeight: FontWeight.bold,
@@ -187,10 +244,9 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                 children: [
                   Container(
                     child: ListTile(
-                      leading: Visibility(
+                      leading: const Visibility(
                         visible: false,
                         child: Icon(Icons.circle_outlined),
-
                       ),
                       minLeadingWidth: 10,
                       contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -201,13 +257,18 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                           const AutoSizeText(
                             'Name',
                             textAlign: TextAlign.left,
-                            maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                             width: 70,
                             child: const Center(
-                                child: AutoSizeText('Type', maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold),)),
+                                child: AutoSizeText(
+                                  'Type',
+                                  maxLines: 1,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                           ),
                         ],
                       ),
@@ -215,7 +276,9 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                         width: 60,
                         child: const AutoSizeText(
                           'Price',
-                          maxLines: 1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
                         ),
                       ),
                     ),
@@ -237,7 +300,8 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                             key: UniqueKey(),
                             sizeFactor: animation,
                             child: ListTile(
-                              tileColor: paints[index].selected ? Colors.grey : null,
+                              tileColor:
+                              paints[index].selected ? Colors.grey : null,
                               leading: !(paints[index].selected)
                                   ? Visibility(
                                   visible: paints[index].checkbox,
@@ -251,38 +315,43 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                   Container(
                                     width: 150,
                                     child: AutoSizeText(
-                                      _items[index].item,
+                                      (data)[index].item,
                                       textAlign: TextAlign.left,
                                       maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Container(
                                     width: 70,
+                                    padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                                     decoration: BoxDecoration(
                                         color: Colors.yellow,
                                         border: Border.all(
                                           color: Colors.black,
                                         ),
-                                        borderRadius:
-                                        const BorderRadius.all(Radius.circular(100))),
-                                    child: AutoSizeText(_items[index].category, maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(100))),
+                                    child: AutoSizeText(
+                                      (data)[index].category,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ],
                               ),
                               trailing: Container(
                                 width: 60,
                                 child: AutoSizeText(
-                                  '₱' + _items[index].price.toString(),
+                                  '₱' + numberFormat.format((data)[index].price).toString(),
                                   maxLines: 1,
-
                                 ),
                               ),
                               onTap: () {
                                 if (paints[index].checkbox) {
                                   setState(
                                         () {
-                                      paints[index].selected = !paints[index].selected;
+                                      paints[index].selected =
+                                      !paints[index].selected;
                                     },
                                   );
                                   if (_number.contains(index)) {
@@ -293,29 +362,32 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                     print(_number);
                                   }
                                 } else {}
-                                print("Selected: " + paints[index].selected.toString());
-                                print("Vsisible: " + paints[index].checkbox.toString());
+                                print("Selected: " +
+                                    paints[index].selected.toString());
+                                print("Vsisible: " +
+                                    paints[index].checkbox.toString());
                               },
                               onLongPress: () {
-                                setState(() {
 
-                                  _number.clear();
+                                _number.clear();
+                                setState(() {
                                   isSwitch = !isSwitch;
-                                  for (int i = 0; i < _items.length; i++) {
+                                  for (int i = 0; i < (data).length; i++) {
                                     paints[i].checkbox = !paints[i].checkbox;
                                     paints[i].selected = false;
                                   }
 
-                                  if(paints[index].checkbox){
+                                  if (paints[index].checkbox) {
                                     paints[index].selected = true;
                                     _number.add(index);
                                     print(_number);
                                   }
-
                                 });
 
-                                print("Selected: " + paints[index].selected.toString());
-                                print("Vsisible: " + paints[index].checkbox.toString());
+                                print("Selected: " +
+                                    paints[index].selected.toString());
+                                print("Vsisible: " +
+                                    paints[index].checkbox.toString());
                               },
                             ),
                           );
@@ -329,16 +401,16 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
             Container(
               margin: EdgeInsets.fromLTRB(40, 20, 40, 10),
               child: Row(
-                children: const [
-                  Expanded(
+                children:  [
+                  const Expanded(
                       child: AutoSizeText('Total: ',
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,
                           maxLines: 1)),
                   Expanded(
-                      child: AutoSizeText(' ₱10',
-                          style: TextStyle(
+                      child: AutoSizeText(total(),
+                          style: const TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.right,
                           maxLines: 1)),
@@ -356,7 +428,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                 width: 30,
                 height: 30,
                 child: FloatingActionButton(
-                    backgroundColor: button_color(),
+                    backgroundColor: buttonColor(),
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),
                     child: button_icon(),
@@ -367,12 +439,13 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Add a Source of Income'),
+                            title: const Text('Add a Monthly Expenses'),
                             content: Container(
                               height: 200,
                               width: 150,
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     height: 55,
@@ -381,7 +454,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                       decoration: const InputDecoration(
                                         labelText: 'Name',
                                         border: OutlineInputBorder(),
-                                        hintText: 'ex. Name of Your Work',
+                                        hintText: 'ex. Globe/Smart/BDO/Food',
                                       ),
                                     ),
                                   ),
@@ -393,20 +466,22 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                         labelText: 'Type',
                                         border: OutlineInputBorder(),
                                         hintText:
-                                        'ex. Primary / Side Hustle',
+                                        'ex. Food/Electric BIll/Internet',
                                       ),
                                     ),
                                   ),
                                   SizedBox(
                                     height: 55,
                                     child: TextField(
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       keyboardType: TextInputType.number,
                                       controller: itemPrice,
                                       decoration: const InputDecoration(
-                                        labelText: 'Monthly Income',
+                                        labelText: 'Price',
                                         border: OutlineInputBorder(),
-                                        hintText: 'ex. 100 / 1000 / 10000',
+                                        hintText: 'ex. 10 / 100 / 1000',
                                       ),
                                     ),
                                   ),
@@ -415,12 +490,12 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                             ),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () { Navigator.pop(context, 'Cancel');
-                                itemName.clear();
-                                itemPrice.clear();
-                                itemType.clear();
-
-                                } ,
+                                onPressed: () {
+                                  Navigator.pop(context, 'Cancel');
+                                  itemName.clear();
+                                  itemPrice.clear();
+                                  itemType.clear();
+                                },
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
@@ -451,4 +526,3 @@ class Paint {
 
   Paint(this.id, this.title, this.colorpicture);
 }
-

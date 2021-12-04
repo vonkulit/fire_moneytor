@@ -1,14 +1,14 @@
 // ignore_for_file: avoid_print
 
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/database/database.dart';
-import 'package:fire_moneytor/functions/construct_spending.dart';
-import 'package:fire_moneytor/functions/functions_spending.dart';
-import 'package:fire_moneytor/widget/drawer_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fire_moneytor/database/database.dart';
+import 'package:fire_moneytor/widget/drawer_widget.dart';
+import 'package:fire_moneytor/functions/construct_spending.dart';
+import 'package:fire_moneytor/functions/functions_spending.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 
 class SpendingMonitorScreen extends StatefulWidget {

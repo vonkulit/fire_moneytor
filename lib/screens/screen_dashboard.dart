@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/functions/functions_bank.dart';
+import 'package:fire_moneytor/functions/functions_savings_invest.dart';
 import 'package:fire_moneytor/functions/functions_income.dart';
 import 'package:fire_moneytor/functions/functions_spending.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
@@ -24,7 +24,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     _savingsData = savingsChartData();
     _chartData = getChartData();
     _incomeData = incomeChartData();
-    _displayProgress = BankList().getTotalSavings();
+    _displayProgress = FunctionSavings().getTotalSavings();
 
     super.initState();
   }
@@ -288,9 +288,9 @@ List<GDPData> incomeChartData() {
 }
 
 List<GDPData> savingsChartData() {
-  List ourKeys = BankList().getKeys();
+  List ourKeys = FunctionSavings().getKeys();
 
-  List ourValues = BankList().getValues();
+  List ourValues = FunctionSavings().getValues();
 
   List<GDPData> chartData = [];
   for (int i = 0; i < ourValues.length; i++) {
