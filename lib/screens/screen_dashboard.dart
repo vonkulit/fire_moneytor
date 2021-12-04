@@ -275,9 +275,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 }
 
 List<GDPData> incomeChartData() {
-  List ourKeys = IncomeFunctions().getKeys();
+  List ourKeys = FunctionsSavings().getKeys();
 
-  List ourValues = IncomeFunctions().getValues();
+  List ourValues = FunctionsSavings().getValues();
 
   List<GDPData> chartData = [];
   for (int i = 0; i < ourValues.length; i++) {

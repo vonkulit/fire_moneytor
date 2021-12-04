@@ -1,11 +1,12 @@
 // ignore_for_file: avoid_print
 
+import 'package:fire_moneytor/functions/construct_income.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fire_moneytor/database/database.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
-import 'package:fire_moneytor/functions/construct_spending.dart';
-import 'package:fire_moneytor/functions/functions_spending.dart';
+import 'package:fire_moneytor/functions/construct_income.dart';
+import 'package:fire_moneytor/functions/functions_income.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +38,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
   }
 
   Database database = Database();
-  List<Spendings> data = [];
+  List<Income> data = [];
 
 // Items in the list
   List _number = [];
@@ -52,7 +53,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    data = database.listBank;
+    data = database.incomeList;
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // do what you want here
@@ -63,16 +64,16 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
 
   }
   String total(){
-    FunctionSpending calculator = FunctionSpending();
-    return "₱" + calculator.calculateSpendTotal(data);
+    FunctionsSavings calculator = FunctionsSavings();
+    return "₱" + calculator.calculateSavingsTotal(data);
   }
 
   void display() async{
     print(data);
     for(int i = 0; i < data.length;i++){
-      print(data[i].item);
+      print(data[i].workName);
       print(data[i].category);
-      print(data[i].price);
+      print(data[i].incomeAmount);
 
       if(_key.currentState != null){
         _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
@@ -94,17 +95,17 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
     paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
     counter++;
     data.insert(0,
-        Spendings(
-            item:itemName.value.text,
+        Income(
+            workName:itemName.value.text,
             category: itemType.value.text,
-            price: double.parse(itemPrice.value.text
+            incomeAmount: double.parse(itemPrice.value.text
             )));
 
     _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
     print("Numbers: " + _number.toString());
 
     for(int i=0;i <data.length;i++){
-      print(data[i].item);
+      print(data[i].workName);
     }
 
     print(data.length);
@@ -225,7 +226,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-              child: Text('Expenses List',
+              child: Text('Income Lists',
                   style: TextStyle(
                       color: Colors.grey[700],
                       fontWeight: FontWeight.bold,
@@ -275,10 +276,10 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                       trailing: Container(
                         width: 60,
                         child: const AutoSizeText(
-                          'Price',
+                          'Amount',
                           maxLines: 1,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
+                              fontWeight: FontWeight.bold, fontSize: 17, ),textAlign: TextAlign.left,
                         ),
                       ),
                     ),
@@ -315,7 +316,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                   Container(
                                     width: 150,
                                     child: AutoSizeText(
-                                      (data)[index].item,
+                                      (data)[index].workName,
                                       textAlign: TextAlign.left,
                                       maxLines: 1,
                                     ),
@@ -342,7 +343,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                               trailing: Container(
                                 width: 60,
                                 child: AutoSizeText(
-                                  '₱' + numberFormat.format((data)[index].price).toString(),
+                                  '₱' + numberFormat.format((data)[index].incomeAmount).toString(),
                                   maxLines: 1,
                                 ),
                               ),
@@ -439,7 +440,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Add a Monthly Expenses'),
+                            title: const Text('Add an Income Source'),
                             content: Container(
                               height: 200,
                               width: 150,
@@ -452,9 +453,9 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                     child: TextField(
                                       controller: itemName,
                                       decoration: const InputDecoration(
-                                        labelText: 'Name',
+                                        labelText: 'Work Name',
                                         border: OutlineInputBorder(),
-                                        hintText: 'ex. Globe/Smart/BDO/Food',
+                                        hintText: 'ex. Clerk, Worker, Youtuber',
                                       ),
                                     ),
                                   ),
@@ -466,7 +467,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                         labelText: 'Type',
                                         border: OutlineInputBorder(),
                                         hintText:
-                                        'ex. Food/Electric BIll/Internet',
+                                        'ex. Full / Part-Time / Hustle',
                                       ),
                                     ),
                                   ),
@@ -479,7 +480,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                       keyboardType: TextInputType.number,
                                       controller: itemPrice,
                                       decoration: const InputDecoration(
-                                        labelText: 'Price',
+                                        labelText: 'Monthly Income',
                                         border: OutlineInputBorder(),
                                         hintText: 'ex. 10 / 100 / 1000',
                                       ),
