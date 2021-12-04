@@ -362,7 +362,7 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Add Item (Monthly Expense)'),
+                            title: const Text('Add Savings/Investment'),
                             content: Container(
                               height: 200,
                               width: 150,

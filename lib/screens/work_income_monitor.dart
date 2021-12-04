@@ -363,7 +363,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Add Item (Monthly Expense)'),
+                            title: const Text('Add a Source of Income'),
                             content: Container(
                               height: 200,
                               width: 150,

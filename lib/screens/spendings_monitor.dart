@@ -363,7 +363,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Add Item (Monthly Expense)'),
+                            title: const Text('Add a Monthly Expenses'),
                             content: Container(
                               height: 200,
                               width: 150,
