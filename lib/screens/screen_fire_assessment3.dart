@@ -1,4 +1,4 @@
-import 'package:fire_moneytor/screens/dashboard_screen.dart';
+import 'package:fire_moneytor/screens/screen_dashboard.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

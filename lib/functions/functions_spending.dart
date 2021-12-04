@@ -1,22 +1,25 @@
-import 'spending_construct.dart';
+import 'package:fire_moneytor/database/database.dart';
+import 'package:intl/intl.dart';
+import 'construct_spending.dart';
 
-class SpendingList {
-  List<Spendings> listBank = [
-    Spendings(item: "Shampoo", category: "Bath", price: 200.0),
-    Spendings(item: "Foods", category: "Food", price: 1932.54),
-    Spendings(
-      item: "Microphone",
-      category: "Computer",
-      price: 4325.21,
-    ),
-    Spendings(item: "Cat food", category: "Food", price: 538.00),
-    Spendings(item: "Meralco", category: "Bills", price: 2350.123),
-  ];
+class FunctionSpending {
+
+  Database theData = Database();
+  List<Spendings> listBank = [];
+
+  void initState(){
+    listBank = theData.getSpendingsData();
+  }
+
+
   Map map = {};
   static List _values = [];
   static List _keys = [];
 
   void addList(String name, String category, double price) {
+
+    List<Spendings> listBank = theData.getSpendingsData();
+
     listBank.insert(
         0,
         Spendings(
@@ -26,15 +29,20 @@ class SpendingList {
         ));
   }
 
-  double calculateSpendTotal() {
+  String calculateSpendTotal(List database) {
+    NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
     double cursorHolder = 0.0;
     double totalPrice = 0.0;
 
-    for (int i = 0; i < listBank.length; i++) {
-      cursorHolder = listBank[i].price;
+    for (int i = 0; i < database.length; i++) {
+      cursorHolder = database[i].price;
       totalPrice += cursorHolder;
     }
-    return totalPrice;
+    return numberFormat.format(totalPrice).toString();
+  }
+
+  List<dynamic> getList(){
+    return listBank;
   }
 
   void categorySpendSummary() {
@@ -50,13 +58,13 @@ class SpendingList {
   }
 
   List getKeys() {
-    calculateSpendTotal();
+    calculateSpendTotal(listBank);
     categorySpendSummary();
     return _keys;
   }
 
   List getValues() {
-    calculateSpendTotal();
+    calculateSpendTotal(listBank);
     categorySpendSummary();
 
     return _values;

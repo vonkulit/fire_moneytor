@@ -1,11 +1,11 @@
-import 'package:fire_moneytor/screens/about_us_screen.dart';
-import 'package:fire_moneytor/screens/dashboard_screen.dart';
-import 'package:fire_moneytor/screens/fire_assessment_screen1.dart';
-import 'package:fire_moneytor/screens/main_screen.dart';
-import 'package:fire_moneytor/screens/savings_monitor.dart';
-import 'package:fire_moneytor/screens/spendings_monitor.dart';
-import 'package:fire_moneytor/screens/what_is_fire_screen.dart';
-import 'package:fire_moneytor/screens/work_income_monitor.dart';
+import 'package:fire_moneytor/screens/screen_about_us.dart';
+import 'package:fire_moneytor/screens/screen_dashboard.dart';
+import 'package:fire_moneytor/screens/screen_fire_assessment1.dart';
+import 'package:fire_moneytor/screens/screen_main.dart';
+import 'package:fire_moneytor/screens/monitor_savings.dart';
+import 'package:fire_moneytor/screens/monitor_spendings.dart';
+import 'package:fire_moneytor/screens/screen_wha_is_fire.dart';
+import 'package:fire_moneytor/screens/monitor_work_income.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatefulWidget {

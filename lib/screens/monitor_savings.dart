@@ -2,10 +2,10 @@
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fire_moneytor/functions/calcbrain.dart';
-import 'package:fire_moneytor/screens/result_screen.dart';
+import 'package:fire_moneytor/screens/screen_result.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:fire_moneytor/functions/spending_construct.dart';
+import 'package:fire_moneytor/functions/construct_spending.dart';
 
 class SavingMonitorScreen extends StatefulWidget {
   const SavingMonitorScreen({Key? key}) : super(key: key);

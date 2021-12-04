@@ -1,25 +1,20 @@
+import 'package:fire_moneytor/screens/screen_fire_assessment3.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'fire_assessment_screen2.dart';
 
-class FireAssessmentScreen extends StatefulWidget {
-  const FireAssessmentScreen({Key? key}) : super(key: key);
+class FireAssessmentScreen2 extends StatefulWidget {
+  final String textFieldExpenses;
+
+  const FireAssessmentScreen2({Key? key, required this.textFieldExpenses})
+      : super(key: key);
 
   @override
-  _FireAssessmentScreenState createState() => _FireAssessmentScreenState();
+  _FireAssessmentScreen2State createState() => _FireAssessmentScreen2State();
 }
 
-class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
-  final textFieldExpenses = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    textFieldExpenses.dispose();
-    super.dispose();
-  }
-
+class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
+  final textFieldSavings = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,13 +24,14 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
           'F.I.R.E Assessment',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
         ),
+        backgroundColor: const Color(0xFF2CDB30),
       ),
       body: ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
             child: Text(
-              'About Monthly Expenses',
+              'About Savings and Investments ${widget.textFieldExpenses}',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -46,9 +42,9 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
           Container(
             padding: const EdgeInsets.only(left: 20, bottom: 10),
             child: Text(
-              'Enter Expenses',
+              'Enter Current savings and investments',
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 18,
                 fontWeight: FontWeight.w900,
                 color: Colors.grey[700],
               ),
@@ -57,7 +53,7 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
           Container(
             margin: const EdgeInsets.only(right: 170, left: 20),
             child: TextField(
-              controller: textFieldExpenses,
+              controller: textFieldSavings,
               decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -96,8 +92,9 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
         child: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FireAssessmentScreen2(
-                      textFieldExpenses: textFieldExpenses.text,
+                builder: (context) => FireAssessmentScreen3(
+                      textFieldExpenses: widget.textFieldExpenses,
+                      textFieldSavings: textFieldSavings.text,
                     )));
           },
           backgroundColor: const Color(0xFF2CDB30),

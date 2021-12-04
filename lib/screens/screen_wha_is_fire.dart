@@ -1,4 +1,4 @@
-import 'package:fire_moneytor/screens/fire_assessment_screen1.dart';
+import 'package:fire_moneytor/screens/screen_fire_assessment1.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

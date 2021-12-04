@@ -1,17 +1,16 @@
-class Bank {
-  Bank({required this.bankname, required this.savings});
-
-  final String bankname;
-  final double savings;
-}
+import 'package:fire_moneytor/database/database.dart';
+import 'construct_bank.dart';
 
 class BankList {
-  List<Bank> bankList = [
-    Bank(bankname: "BDO", savings: 24605.231),
-    Bank(bankname: "BPI", savings: 12322.7882),
-    Bank(bankname: "Bank 3", savings: 13412.32),
-    Bank(bankname: "Bank 4", savings: 5422.87),
-  ];
+
+  Database theData = Database();
+  List<Bank> bankList = [];
+
+  void initState(){
+    bankList = theData.getBankData();
+  }
+
+
 
   String _totalSavings = "";
   Map map = {};

@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/functions/bank_functions.dart';
-import 'package:fire_moneytor/functions/income_functions.dart';
-import 'package:fire_moneytor/functions/spending_functions.dart';
+import 'package:fire_moneytor/functions/functions_bank.dart';
+import 'package:fire_moneytor/functions/functions_income.dart';
+import 'package:fire_moneytor/functions/functions_spending.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -261,9 +261,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   List<GDPData> getChartData() {
-    List ourKeys = SpendingList().getKeys();
+    List ourKeys = FunctionSpending().getKeys();
 
-    List ourValues = SpendingList().getValues();
+    List ourValues = FunctionSpending().getValues();
 
     List<GDPData> chartData = [];
     for (int i = 0; i < ourValues.length; i++) {
@@ -275,9 +275,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 }
 
 List<GDPData> incomeChartData() {
-  List ourKeys = incomeFunctions().getKeys();
+  List ourKeys = IncomeFunctions().getKeys();
 
-  List ourValues = incomeFunctions().getValues();
+  List ourValues = IncomeFunctions().getValues();
 
   List<GDPData> chartData = [];
   for (int i = 0; i < ourValues.length; i++) {
