@@ -14,16 +14,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   ListView getAboutUs() {
     List<Widget> name = [];
 
-    /*name.add(
-      Container(
-        padding: const EdgeInsets.only(top: 8.0),
-        height: 100.0,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[]),
-      ),
-    );
-
-     */
 
     for (var i = 0; i < 4; i++) {
       name.add(
