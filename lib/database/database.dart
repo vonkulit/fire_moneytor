@@ -1,8 +1,14 @@
 import 'package:fire_moneytor/functions/construct_income.dart';
 import 'package:fire_moneytor/functions/construct_spending.dart';
 import 'package:fire_moneytor/functions/construct_savings_invest.dart';
+import 'package:hive/hive.dart';
 
 class Database{
+
+  late final listbank2 = Hive.box<Spendings>('listBank');
+
+  void inistState(){
+  }
 
   List<SavingsInvestments> bankList = [
   SavingsInvestments(name: "BDO", category: "Savings", savings: 24605.231),
@@ -20,15 +26,6 @@ class Database{
   ];
 
   List<Spendings> listBank = [
-    Spendings(item: "Shampoo", category: "Bath", price: 200.0),
-    Spendings(item: "Foods", category: "Food", price: 1932.54),
-    Spendings(
-      item: "Microphone",
-      category: "Computer",
-      price: 4325.21,
-    ),
-    Spendings(item: "Cat food", category: "Food", price: 538.00),
-    Spendings(item: "Meralco", category: "Bills", price: 2350.123),
   ];
 
   List<SavingsInvestments> getBankData(){
@@ -41,6 +38,10 @@ class Database{
 
   List<Income> getIncomeData(){
     return incomeList;
+  }
+
+  Box<Spendings> getSpendingsData2(){
+    return listbank2;
   }
 
 

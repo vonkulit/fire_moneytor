@@ -4,9 +4,17 @@ import 'package:fire_moneytor/screens/screen_dashboard.dart';
 import 'package:fire_moneytor/screens/screen_main.dart';
 import 'package:fire_moneytor/screens/screen_wha_is_fire.dart';
 import 'package:flutter/material.dart';
+import 'functions/construct_spending.dart';
 import 'screens/screen_main.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(SpendingsAdapter());
+  await Hive.openBox<Spendings>('listBank');
+
+
   WidgetsFlutterBinding.ensureInitialized();
   final CheckIfFirstTime _auth = CheckIfFirstTime();
   final bool firstPage = _auth.isFirst();
@@ -18,6 +26,11 @@ void main() {
 
 class MyApp extends StatelessWidget {
   var initialRoute;
+
+  void dispose() {
+    // Closes all Hive boxes
+    Hive.close();
+  }
 
   // This widget is the root of your application.
   MyApp({Key? key, this.initialRoute}) : super(key: key);
