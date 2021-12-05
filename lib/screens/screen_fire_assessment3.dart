@@ -67,29 +67,19 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
       body: ListView(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
             child: Text(
-              'About Work and Income',
+              'The last part of the assessment is to list down your monthly income, or the total income you receive monthly from your different jobs, or side hustles. Listing this within the assessment will help us know how fast will it take for you to retire, assuming that you are saving all your income. Remember, in the world today, having a single job does not help you anymore to be financially free, so you should take this as a sign to look for some small side hustles to earn from time to time. A Textfield is provided below, if you already know how much you are earning monthly then feel free to enter it to know how far you need to achieve financial freedom',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
                 color: Colors.grey[700],
               ),
+              textAlign: TextAlign.justify,
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(left: 20, bottom: 10),
-            child: Text(
-              'Enter monthly income after tax if possible',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 170, left: 20),
+            margin: const EdgeInsets.only(right: 20, left: 20),
             child: TextField(
               controller: textFieldIncome,
               decoration: const InputDecoration(
@@ -97,6 +87,7 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                 fillColor: Colors.white,
                 border: OutlineInputBorder(),
                 labelText: 'Enter Amount',
+                hintText: 'Monthly Income After Tax if possible',
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -107,19 +98,16 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                 FilteringTextInputFormatter.digitsOnly
               ],
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 20),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 100),
-            child: Text(
-              "If you don't know you can enter an estimate or a dummy value and we will help you get the exact value later with our monitoring features",
+          ),Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            child: Text('If you do not know your monthly income, or you would like to track each one of them, then you might want to check out the income monitoring features that the app has. May it motivate you to hustle more towards your own financial independence',
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
                 color: Colors.grey[700],
               ),
+
+              textAlign: TextAlign.justify,
             ),
           ),
         ],

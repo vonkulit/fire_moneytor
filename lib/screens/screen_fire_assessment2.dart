@@ -53,29 +53,20 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
       body: ListView(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
-            child: Text(
-              'About Savings and Investments ${widget.textFieldExpenses}',
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
+            child: Text("The second thing that we need to know is your total money saved in the bank, and assets invested. There are researches that says that you can always withdraw about 4% of your total assets a year without ever running out of money again. With that, you can enter the total savings and investment that you have, as it will help us determine how far you are from being able to retire  ",
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 19,
                 fontWeight: FontWeight.w400,
                 color: Colors.grey[700],
+
               ),
+              textAlign: TextAlign.justify,
             ),
           ),
+
           Container(
-            padding: const EdgeInsets.only(left: 20, bottom: 10),
-            child: Text(
-              'Enter Current savings and investments',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 170, left: 20),
+            margin: const EdgeInsets.only(right: 20, left: 20),
             child: TextField(
               controller: textFieldSavings,
               decoration: const InputDecoration(
@@ -83,6 +74,7 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
                 fillColor: Colors.white,
                 border: OutlineInputBorder(),
                 labelText: 'Enter Amount',
+                hintText: 'Total Savings and Investments',
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -94,18 +86,16 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 20),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 100),
-            child: Text(
-              "If you don't know you can enter an estimate or a dummy value and we will help you get the exact value later with our monitoring features",
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
+            child: Text('Once again, if you do not know your total savings and investments, you can just enter an estimate or 0 to continue with the assessment. You can also checkout the Savings and Investment Monitoring Feature of the App as it may help you with your journey to Financial Freedom!',
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: 19,
+                fontWeight: FontWeight.w400,
                 color: Colors.grey[700],
+
               ),
+              textAlign: TextAlign.justify,
             ),
           ),
         ],

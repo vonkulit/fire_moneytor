@@ -45,25 +45,16 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
       body: ListView(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
             child: Text(
-              'About Monthly Expenses',
+              'The first step on the FIRE Movement is to get to know your Monthly Expenses. This will help determine how much will you need to money you need saved and invested to cover your daily expenses. With that you can enter your Monthly Expenses on the TextField below if you already know it. ',
               style: TextStyle(
-                fontSize: 18,
+
+                fontSize: 22,
                 fontWeight: FontWeight.w400,
                 color: Colors.grey[700],
               ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20, bottom: 10),
-            child: Text(
-              'Enter Expenses',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-                color: Colors.grey[700],
-              ),
+              textAlign: TextAlign.justify,
             ),
           ),
           Container(
@@ -75,6 +66,7 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
                 fillColor: Colors.white,
                 border: OutlineInputBorder(),
                 labelText: 'Enter Amount',
+                hintText: 'Monthly Expenses',
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -85,20 +77,21 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
                 FilteringTextInputFormatter.digitsOnly
               ],
             ),
+          ),Padding(
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
+            child: Text(
+              'If not, you can just enter zero to proceed with the assessment. Do not worry, we have provided a Monthly Monitoring Expenses within the app to help you start',
+              style: TextStyle(
+
+                fontSize: 22,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[700],
+              ),
+              textAlign: TextAlign.justify,
+            ),
           ),
           const Padding(
             padding: EdgeInsets.only(top: 20),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 100),
-            child: Text(
-              "If you don't know you can enter an estimate or a dummy value and we will help you get the exact value later with our monitoring features",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
           ),
         ],
       ),
