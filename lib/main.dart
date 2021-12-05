@@ -20,6 +20,7 @@ void main() async {
   await Hive.openBox<Spendings>('listBank');
   await Hive.openBox<SavingsInvestments>('bankList');
   await Hive.openBox<Income>('incomeList');
+  await Hive.openBox('assessment');
 
 
   WidgetsFlutterBinding.ensureInitialized();

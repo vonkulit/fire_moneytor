@@ -1,6 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fire_moneytor/functions/calcbrain.dart';
 import 'package:fire_moneytor/functions/construct_income.dart';
+import 'package:fire_moneytor/functions/construct_savings_invest.dart';
 import 'package:fire_moneytor/screens/screen_dashboard.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -22,12 +26,34 @@ class FireAssessmentScreen3 extends StatefulWidget {
 class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
   final textFieldIncome = TextEditingController();
 
-  late final data2;
+ late final data2;
 
-  _addToDatabase(Income item) {
-    data2.add(item);
+
+  _addItem(){
+    data2.add(textFieldIncome.value.text);
+
+    print(data2);
+    print("I am the length " + data2.length.toString() );
+    print("assessment 3 clear");
   }
 
+  _readItem(){
+    for(int i = 0; i<data2.length;i++){
+      print(data2.get(i).toString());
+      print(data2.length.toString());
+    }
+  }
+
+  String calculateAge(){
+    CalcBrain calculator = CalcBrain(monthlyexpense: double.parse(data2.get(0, defaultValue:0)), savings: double.parse(data2.get(1,defaultValue:0)), monthlyincome: double.parse(data2.get(2,defaultValue:0)));
+    return calculator.calculateAge();
+  }
+
+  String calculateFireGoal(){
+    CalcBrain calculator = CalcBrain(monthlyexpense: double.parse(data2.get(0,defaultValue:0)), savings: double.parse(data2.get(1, defaultValue:0)), monthlyincome: double.parse(data2.get(2,defaultValue:0)));
+    return calculator.fireGoal();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,11 +129,10 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
         height: 40.0,
         child: FloatingActionButton(
           onPressed: () {
-            data2 = Hive.box<Income>("incomeList");
-            _addToDatabase(Income(
-                workName: "My Work",
-                category: "Overall",
-                incomeAmount: double.parse(textFieldIncome.value.text)));
+            data2 = Hive.box("assessment");
+            _addItem();
+            _readItem();
+
             showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -115,14 +140,12 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 contentPadding: EdgeInsets.zero,
                 backgroundColor: const Color(0xFFB9FFB9),
-                title: Center(
-                  child: Text(
-                    'Results',
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                    ),
+                title: Text(
+                  'Results',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 content: Container(
@@ -144,22 +167,73 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                               padding: const EdgeInsets.only(
                                   left: 20, top: 15, right: 20),
                               child: SizedBox(
-                                child: Text(
-                                  'With your current data'
-                                  ' you have 43 years to reach'
-                                  ' your \$1,000,000 goal'
-                                  ' for retirement. You can'
-                                  ' further bring it closer by'
-                                  ' adding more to your inv.'
-                                  ' saving, decrease your'
-                                  ' monthly expenses, and'
-                                  ' look for more side hustles. \n\n'
-                                  'GOOD LUCK FUTURE\n'
-                                  'MILLIONAIRE!',
+                                child: AutoSizeText("Based on the Expenses that you have entered, your target retirement fund that will cover your day to day expenses shall be:" ,
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey[700]),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 7,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, top: 20, right: 20),
+                              child: SizedBox(
+                                child: AutoSizeText("~ " + calculateFireGoal() + " ~",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[700]),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 4,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, top: 15, right: 20),
+                              child: SizedBox(
+                                child: AutoSizeText("Additionally, based on your current number of savings and investments, together with your monthly income, you are expected to reach your goal within:" ,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey[700]),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, top: 20, bottom: 30, right: 20),
+                              child: SizedBox(
+                                child: AutoSizeText("~ " + calculateAge() + " ~",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[700]),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ),

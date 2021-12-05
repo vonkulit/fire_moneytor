@@ -74,8 +74,8 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
   }
 
   String total() {
-    FunctionsSavings calculator = FunctionsSavings();
-    return "₱" + calculator.calculateSavingsTotal(data2);
+    FunctionIncome calculator = FunctionIncome();
+    return "₱" + calculator.calculateIncomeTotal(data2);
   }
 
   void display() async {

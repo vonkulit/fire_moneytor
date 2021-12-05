@@ -1,10 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fire_moneytor/functions/construct_income.dart';
+import 'package:fire_moneytor/functions/construct_savings_invest.dart';
+import 'package:fire_moneytor/functions/construct_spending.dart';
 import 'package:fire_moneytor/functions/functions_savings_invest.dart';
 import 'package:fire_moneytor/functions/functions_income.dart';
 import 'package:fire_moneytor/functions/functions_spending.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:hive/hive.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
@@ -15,11 +19,65 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   late String _displayProgress = "";
+  late final data1;
+  late final data2;
+  late final data3;
 
   @override
   void initState() {
-
+    WidgetsFlutterBinding.ensureInitialized();
+    data1 = Hive.box<Income>('incomeList');
+    data2 = Hive.box<SavingsInvestments>('bankList');
+    data3 = Hive.box<Spendings>('listBank');
+    chartSpendings();
+    _currentProgress();
     super.initState();
+  }
+
+  chartSpendings(){
+    data3.getAt(0).item;
+    data3.getAt(0).price;
+
+      Map map = Map();
+      List _values =[];
+      List _keys = [];
+
+      for (int i = 0; i < data3.length; i++) {
+        if (!map.containsKey(data3.getAt(i).category)) {
+          map[data3.getAt(i).category] = 1;
+        } else {
+          map[data3.getAt(i).category] += 1;
+        }
+    }
+
+    _keys = map.keys.toList();
+    _values = map.values.toList();
+  }
+
+
+  _currentProgress(){
+    FunctionSavings calculator = FunctionSavings();
+    _displayProgress = "₱" + calculator.calculateSavingsTotal(data2);
+  }
+
+  String fireGoal(){
+    FunctionSpending calculator = FunctionSpending();
+    return "₱" + calculator.calculateSpendTotal(data3);
+  }
+
+  String totalExpenses(){
+    FunctionSpending calculator = FunctionSpending();
+    return "₱" + calculator.calculateSpendTotal(data3);
+  }
+
+  String totalSavings(){
+    FunctionSavings calculator = FunctionSavings();
+    return "₱" + calculator.calculateSavingsTotal(data2);
+  }
+
+  String totalIncome(){
+    FunctionIncome calculator = FunctionIncome();
+    return "₱" + calculator.calculateIncomeTotal(data1);
   }
 
   @override
@@ -73,9 +131,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     indent: 10,
                     endIndent: 10,
                   ),
-                  const Center(
-                    child: Text('Your Fire Goal is ₱1,000,000 ',
-                        style: TextStyle(
+                   Center(
+                    child: Text('Your Fire Goal is ' + fireGoal(),
+                        style: const TextStyle(
                             color: Colors.red, fontWeight: FontWeight.bold)),
                   ),
                   Container(
@@ -119,7 +177,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       endIndent: 100,
                     ),
                     Expanded(
-                        child: AutoSizeText(' Total: ₱10',
+                        child: AutoSizeText(' Total: ' + totalExpenses(),
                             style: TextStyle(
                                 color: Colors.grey[850],
                                 fontSize: 15,
@@ -130,8 +188,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-                            xValueMapper: (GDPData data, _) => data.continent,
-                            yValueMapper: (GDPData data, _) => data.gdp,
+                            dataSource: data3,
+                            xValueMapper: (GDPData data, _) => data3.item,
+                            yValueMapper: (GDPData data, _) => data3.price,
                             dataLabelSettings:
                                 const DataLabelSettings(isVisible: true))
                       ],
@@ -172,7 +231,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       endIndent: 100,
                     ),
                     Expanded(
-                        child: AutoSizeText(' Total: ₱10',
+                        child: AutoSizeText(' Total: ' + totalSavings(),
                             style: TextStyle(
                                 color: Colors.grey[850],
                                 fontSize: 15,
@@ -225,7 +284,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       endIndent: 100,
                     ),
                     Expanded(
-                        child: AutoSizeText(' Total: ₱10',
+                        child: AutoSizeText(' Total: ' + totalIncome(),
                             style: TextStyle(
                                 color: Colors.grey[850],
                                 fontSize: 15,
@@ -236,6 +295,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
+
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
