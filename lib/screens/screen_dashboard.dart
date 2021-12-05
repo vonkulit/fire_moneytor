@@ -198,7 +198,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-                    child: const Text('"Did you know?"'),
+                    child: const Text('"To Financial Freedom!"'),
                   )
                 ],
               ),
