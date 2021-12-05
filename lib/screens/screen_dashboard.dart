@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/functions/bank_functions.dart';
-import 'package:fire_moneytor/functions/income_functions.dart';
-import 'package:fire_moneytor/functions/spending_functions.dart';
+import 'package:fire_moneytor/functions/functions_savings_invest.dart';
+import 'package:fire_moneytor/functions/functions_income.dart';
+import 'package:fire_moneytor/functions/functions_spending.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -24,7 +24,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     _savingsData = savingsChartData();
     _chartData = getChartData();
     _incomeData = incomeChartData();
-    _displayProgress = BankList().getTotalSavings();
+    _displayProgress = FunctionSavings().getTotalSavings();
 
     super.initState();
   }
@@ -39,7 +39,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           'Dashboard',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
         ),
-        backgroundColor: const Color(0xFF2CDB30),
       ),
       body: Center(
         child: ListView(
@@ -262,9 +261,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   List<GDPData> getChartData() {
-    List ourKeys = SpendingList().getKeys();
+    List ourKeys = FunctionSpending().getKeys();
 
-    List ourValues = SpendingList().getValues();
+    List ourValues = FunctionSpending().getValues();
 
     List<GDPData> chartData = [];
     for (int i = 0; i < ourValues.length; i++) {
@@ -276,9 +275,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 }
 
 List<GDPData> incomeChartData() {
-  List ourKeys = incomeFunctions().getKeys();
+  List ourKeys = FunctionsSavings().getKeys();
 
-  List ourValues = incomeFunctions().getValues();
+  List ourValues = FunctionsSavings().getValues();
 
   List<GDPData> chartData = [];
   for (int i = 0; i < ourValues.length; i++) {
@@ -289,9 +288,9 @@ List<GDPData> incomeChartData() {
 }
 
 List<GDPData> savingsChartData() {
-  List ourKeys = BankList().getKeys();
+  List ourKeys = FunctionSavings().getKeys();
 
-  List ourValues = BankList().getValues();
+  List ourValues = FunctionSavings().getValues();
 
   List<GDPData> chartData = [];
   for (int i = 0; i < ourValues.length; i++) {

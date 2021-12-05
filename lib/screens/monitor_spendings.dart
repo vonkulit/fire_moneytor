@@ -1,12 +1,16 @@
 // ignore_for_file: avoid_print
 
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fire_moneytor/functions/spending_construct.dart';
-import 'package:fire_moneytor/functions/spending_functions.dart';
-import 'package:fire_moneytor/widget/drawer_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fire_moneytor/database/database.dart';
+import 'package:fire_moneytor/widget/drawer_widget.dart';
+import 'package:fire_moneytor/functions/construct_spending.dart';
+import 'package:fire_moneytor/functions/functions_spending.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:intl/intl.dart';
+
 
 class SpendingMonitorScreen extends StatefulWidget {
   const SpendingMonitorScreen({Key? key}) : super(key: key);
@@ -16,10 +20,15 @@ class SpendingMonitorScreen extends StatefulWidget {
 }
 
 class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
+  NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
+
+  int itemCounter = 0;
   final itemName = TextEditingController();
   final itemType = TextEditingController();
   final itemPrice = TextEditingController();
+  int counter = 0;
 
+  @override
   void dispose() {
     itemName.dispose();
     itemType.dispose();
@@ -27,17 +36,13 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
     super.dispose();
   }
 
+  Database database = Database();
+  List<Spendings> data = [];
+
 // Items in the list
-  final _items = [];
   List _number = [];
 
   List<Paint> paints = <Paint>[
-    Paint(1, 'Red', Colors.red),
-    Paint(2, 'Blue', Colors.pink),
-    Paint(3, 'Green', Colors.green),
-    Paint(4, 'Lime', Colors.lime),
-    Paint(5, 'Indigo', Colors.pink),
-    Paint(6, 'Yellow', Colors.yellow)
   ];
 
   // The key of the list
@@ -46,27 +51,70 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
 
   @override
   void initState() {
+    // TODO: implement initState
+    data = database.listBank;
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // do what you want here
+      display();
+    });
+
+
+
+  }
+String total(){
+  FunctionSpending calculator = FunctionSpending();
+    return "₱" + calculator.calculateSpendTotal(data);
+}
+
+  void display() async{
+    print(data);
+    for(int i = 0; i < data.length;i++){
+      print(data[i].item);
+      print(data[i].category);
+      print(data[i].price);
+
+      if(_key.currentState != null){
+        _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
+
+        paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
+        counter++;
+      }
+      }
+
+
+
+
   }
 
   // Add a new item to the list
   // This is trigger when the floating button is pressed
   void _addItem() {
-    _items.insert(
-        0,
+    print(data.length);
+    paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
+    counter++;
+    data.insert(0,
         Spendings(
-            item: itemName.value.text,
-            category: itemType.value.text,
-            price: double.parse(itemPrice.value.text)));
-    _key.currentState!.insertItem(0, duration: Duration(seconds: 1));
+        item:itemName.value.text,
+        category: itemType.value.text,
+        price: double.parse(itemPrice.value.text
+    )));
+
+    _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
     print("Numbers: " + _number.toString());
-    print("Items: " + _items.toString());
+
+    for(int i=0;i <data.length;i++){
+      print(data[i].item);
+    }
+
+    print(data.length);
+
     itemName.clear();
     itemPrice.clear();
     itemType.clear();
 
     setState(() {
-      for (int i = 0; i < _items.length; i++) {
+      for (int i = 0; i < data.length; i++) {
         paints[i].checkbox = false;
         paints[i].selected = false;
       }
@@ -80,11 +128,11 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
     print(reverseList.toString());
     for (int i = 0; i < reverseList.length; i++) {
       print("Numbers: " + _number.toString());
-      print("Items: " + _items.toString());
+      print("Items: " + (data).toString());
       paints[reverseList[i]].selected = !paints[reverseList[i]].selected;
       _removeItem(reverseList[i]);
     }
-    for (int i = 0; i < _items.length; i++) {
+    for (int i = 0; i < (data).length; i++) {
       paints[i].checkbox = !paints[i].checkbox;
       paints[i].selected = false;
     }
@@ -116,13 +164,13 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
         ;
       },
     );
-    _items.removeAt(index);
+    (data).removeAt(index);
 
-    print(_items);
+    print((data));
   }
 
   bool isSwitch = false;
-  Color button_color() {
+  Color buttonColor() {
     if (isSwitch) {
       return Colors.red;
     } else {
@@ -144,7 +192,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
     if (isSwitch) {
       setState(() {
         isSwitch = !isSwitch;
-        for (int i = 0; i < _items.length; i++) {
+        for (int i = 0; i < (data).length; i++) {
           paints[i].checkbox = !paints[i].checkbox;
           paints[i].selected = false;
         }
@@ -196,7 +244,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                 children: [
                   Container(
                     child: ListTile(
-                      leading: Visibility(
+                      leading: const Visibility(
                         visible: false,
                         child: Icon(Icons.circle_outlined),
                       ),
@@ -213,7 +261,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                             width: 70,
                             child: const Center(
                                 child: AutoSizeText(
@@ -267,13 +315,14 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                   Container(
                                     width: 150,
                                     child: AutoSizeText(
-                                      (_items)[index].item,
+                                      (data)[index].item,
                                       textAlign: TextAlign.left,
                                       maxLines: 1,
                                     ),
                                   ),
                                   Container(
                                     width: 70,
+                                    padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                                     decoration: BoxDecoration(
                                         color: Colors.yellow,
                                         border: Border.all(
@@ -282,7 +331,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(100))),
                                     child: AutoSizeText(
-                                      _items[index].category,
+                                      (data)[index].category,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
@@ -293,11 +342,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                               trailing: Container(
                                 width: 60,
                                 child: AutoSizeText(
-                                  '₱' +
-                                      SpendingList()
-                                          .listBank[index]
-                                          .price
-                                          .toString(),
+                                  '₱' + numberFormat.format((data)[index].price).toString(),
                                   maxLines: 1,
                                 ),
                               ),
@@ -323,10 +368,11 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                     paints[index].checkbox.toString());
                               },
                               onLongPress: () {
+
                                 _number.clear();
                                 setState(() {
                                   isSwitch = !isSwitch;
-                                  for (int i = 0; i < _items.length; i++) {
+                                  for (int i = 0; i < (data).length; i++) {
                                     paints[i].checkbox = !paints[i].checkbox;
                                     paints[i].selected = false;
                                   }
@@ -355,16 +401,16 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
             Container(
               margin: EdgeInsets.fromLTRB(40, 20, 40, 10),
               child: Row(
-                children: const [
-                  Expanded(
+                children:  [
+                  const Expanded(
                       child: AutoSizeText('Total: ',
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,
                           maxLines: 1)),
                   Expanded(
-                      child: AutoSizeText(' ₱10',
-                          style: TextStyle(
+                      child: AutoSizeText(total(),
+                          style: const TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.right,
                           maxLines: 1)),
@@ -382,7 +428,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                 width: 30,
                 height: 30,
                 child: FloatingActionButton(
-                    backgroundColor: button_color(),
+                    backgroundColor: buttonColor(),
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.zero),
                     child: button_icon(),
@@ -506,7 +552,7 @@ class Paint {
     }
 
     // Items in the list
-    final _items = [];
+    final (data) = [];
 
     // The key of the list
     final GlobalKey<AnimatedListState> _key = GlobalKey();
@@ -514,14 +560,14 @@ class Paint {
     // Add a new item to the list
     // This is trigger when the floating button is pressed
     void _addItem() {
-      _items.insert(
+      (data).insert(
           0,
           Spendings(
               item: itemName.value.text,
               category: itemType.value.text,
               price: double.parse(itemPrice.value.text)));
       _key.currentState!.insertItem(0, duration: Duration(seconds: 1));
-      print(_items);
+      print((data));
       itemName.clear();
       itemPrice.clear();
       itemType.clear();
@@ -551,7 +597,7 @@ class Paint {
         },
       );
 
-      _items.removeAt(index);
+      (data).removeAt(index);
     }
 
     return Scaffold(
@@ -631,7 +677,7 @@ class Paint {
                                   .spaceBetween, //Center Row contents horizontally,
                               children: [
                                 AutoSizeText(
-                                  _items[index].item,
+                                  (data)[index].item,
                                   textAlign: TextAlign.left,
                                   maxLines: 1,
                                 ),
@@ -646,13 +692,13 @@ class Paint {
                                           Radius.circular(100))),
                                   child: Center(
                                       child: AutoSizeText(
-                                          _items[index].category,
+                                          (data)[index].category,
                                           maxLines: 1)),
                                 ),
                               ],
                             ),
                             trailing: AutoSizeText(
-                              '₱' + _items[index].price.toString(),
+                              '₱' + (data)[index].price.toString(),
                               maxLines: 1,
                             ),
                           ),

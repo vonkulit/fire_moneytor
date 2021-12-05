@@ -1,18 +1,20 @@
-import 'package:fire_moneytor/screens/fire_assessment_screen3.dart';
+import 'package:fire_moneytor/screens/screen_fire_assessment3.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FireAssessmentScreen2 extends StatefulWidget {
-  const FireAssessmentScreen2({Key? key}) : super(key: key);
+  final String textFieldExpenses;
+
+  const FireAssessmentScreen2({Key? key, required this.textFieldExpenses})
+      : super(key: key);
 
   @override
   _FireAssessmentScreen2State createState() => _FireAssessmentScreen2State();
 }
 
 class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
-  int input = 0;
-
+  final textFieldSavings = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +31,7 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 30, 10, 220),
             child: Text(
-              'About Savings and Investments',
+              'About Savings and Investments ${widget.textFieldExpenses}',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -51,9 +53,7 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
           Container(
             margin: const EdgeInsets.only(right: 170, left: 20),
             child: TextField(
-              onChanged: (value) {
-                input = value as int;
-              },
+              controller: textFieldSavings,
               decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -92,7 +92,10 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
         child: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const FireAssessmentScreen3()));
+                builder: (context) => FireAssessmentScreen3(
+                      textFieldExpenses: widget.textFieldExpenses,
+                      textFieldSavings: textFieldSavings.text,
+                    )));
           },
           backgroundColor: const Color(0xFF2CDB30),
           shape: const BeveledRectangleBorder(
