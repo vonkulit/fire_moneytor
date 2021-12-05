@@ -40,15 +40,17 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   "images/${functionStudent.bank[i].imageN}",
                   width: 190,
                 ),
-                Text(
-                  '${functionStudent.bank[i].name} \n '
-                  '${functionStudent.bank[i].university}\n'
-                  '${functionStudent.bank[i].course}\n'
-                  '${functionStudent.bank[i].quote}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    height: 1.8,
+                Flexible(
+                  child: Text(
+                    '${functionStudent.bank[i].name} \n '
+                    '${functionStudent.bank[i].university}\n'
+                    '${functionStudent.bank[i].course}\n'
+                    '${functionStudent.bank[i].quote}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      height: 1.8,
+                    ),
                   ),
                 ),
                 const Padding(

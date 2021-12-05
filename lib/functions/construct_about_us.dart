@@ -18,25 +18,26 @@ class FunctionStudents {
         name: "Tan, John Stephen",
         university: "UST",
         course: "ComSci",
-        quote: "placeholder0",
-        imageN: "Tan_About_Us.jpeg"),
+        quote:
+            "\"A sword wields no strength unless the hand that holds it has courage.\"",
+        imageN: "Tan_About_Us.jpg"),
     ListofStudents(
         name: "Von, Bryan Guron",
         university: "UST",
         course: "ComSci",
-        quote: "placeholder1",
-        imageN: "Guron_About_Us.jpeg"),
+        quote: "\"To Infinity and Beyond.\"",
+        imageN: "Guron_About_Us.png"),
     ListofStudents(
         name: "Parayno, Jeanne Henrey",
         university: "UST",
         course: "ComSci",
-        quote: "placeholder2",
+        quote: "\"Work Hard Play Hard.\"",
         imageN: "Jan_About_Us.jpg"),
     ListofStudents(
         name: "Venegas, Michael Andrew",
         university: "UST",
         course: "ComSci",
-        quote: "placeholder3",
-        imageN: "Venegas_About_Us.jpeg"),
+        quote: "\"Time is Gold.\"",
+        imageN: "Venegas_About_Us.png"),
   ];
 }

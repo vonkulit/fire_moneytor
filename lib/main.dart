@@ -11,7 +11,6 @@ import 'screens/screen_main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-
   await Hive.initFlutter();
   Hive.registerAdapter(SpendingsAdapter());
   Hive.registerAdapter(SavingsInvestmentsAdapter());
@@ -20,7 +19,6 @@ void main() async {
   await Hive.openBox<Spendings>('listBank');
   await Hive.openBox<SavingsInvestments>('bankList');
   await Hive.openBox<Income>('incomeList');
-
 
   WidgetsFlutterBinding.ensureInitialized();
   final CheckIfFirstTime _auth = CheckIfFirstTime();
@@ -57,12 +55,16 @@ class MyApp extends StatelessWidget {
 }
 
 class CheckIfFirstTime {
-  int testerIfWorking = 1;
+  late bool status;
+  final box = Hive.box<Spendings>('listBank');
+  late final data2 = box.get('listBank');
+
   bool isFirst() {
-    if (testerIfWorking == 1) {
-      return true;
+    if (data2 == null) {
+      status = true;
     } else {
-      return false;
+      status = false;
     }
+    return status;
   }
 }
