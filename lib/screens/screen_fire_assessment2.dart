@@ -18,14 +18,12 @@ class FireAssessmentScreen2 extends StatefulWidget {
 class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
   final textFieldSavings = TextEditingController();
 
-
   late final data2;
 
-
-
-  _addToDatabase(SavingsInvestments item){
+  _addToDatabase(SavingsInvestments item) {
     data2.add(item);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +102,7 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
           onPressed: () {
             data2 = Hive.box<SavingsInvestments>("bankList");
             _addToDatabase(SavingsInvestments(
-                name:"My Saavings",
+                name: "My Saavings",
                 category: "Overall",
                 savings: double.parse(textFieldSavings.value.text)));
             Navigator.of(context).push(MaterialPageRoute(
