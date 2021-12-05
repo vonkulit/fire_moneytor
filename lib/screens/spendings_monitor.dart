@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fire_moneytor/functions/spending_construct.dart';
+import 'package:fire_moneytor/functions/spending_functions.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +46,6 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -267,7 +267,7 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                   Container(
                                     width: 150,
                                     child: AutoSizeText(
-                                      _items[index].item,
+                                      (_items)[index].item,
                                       textAlign: TextAlign.left,
                                       maxLines: 1,
                                     ),
@@ -293,7 +293,11 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                               trailing: Container(
                                 width: 60,
                                 child: AutoSizeText(
-                                  '₱' + _items[index].price.toString(),
+                                  '₱' +
+                                      SpendingList()
+                                          .listBank[index]
+                                          .price
+                                          .toString(),
                                   maxLines: 1,
                                 ),
                               ),
@@ -319,7 +323,6 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
                                     paints[index].checkbox.toString());
                               },
                               onLongPress: () {
-
                                 _number.clear();
                                 setState(() {
                                   isSwitch = !isSwitch;

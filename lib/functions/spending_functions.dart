@@ -16,6 +16,10 @@ class SpendingList {
   static List _values = [];
   static List _keys = [];
 
+  List returnExpenses() {
+    return listBank;
+  }
+
   void addList(String name, String category, double price) {
     listBank.insert(
         0,
