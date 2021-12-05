@@ -7,10 +7,10 @@ import 'package:fire_moneytor/database/database.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:fire_moneytor/functions/construct_income.dart';
 import 'package:fire_moneytor/functions/functions_income.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
-
 
 class WorkIncomeMonitorScreen extends StatefulWidget {
   const WorkIncomeMonitorScreen({Key? key}) : super(key: key);
@@ -24,6 +24,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
   NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
 
   int itemCounter = 0;
+  late final data2;
   final itemName = TextEditingController();
   final itemType = TextEditingController();
   final itemPrice = TextEditingController();
@@ -43,8 +44,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
 // Items in the list
   List _number = [];
 
-  List<Paint> paints = <Paint>[
-  ];
+  List<Paint> paints = <Paint>[];
 
   // The key of the list
   final GlobalKey<AnimatedListState> _key = GlobalKey();
@@ -53,58 +53,77 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    data2 = Hive.box<Income>("incomeList");
     data = database.incomeList;
     super.initState();
+    total();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // do what you want here
       display();
     });
 
-
-
   }
-  String total(){
+
+
+  _addToDatabase(Income item) {
+    data2.add(item);
+  }
+
+  _deleteOnDatabase(int i) {
+    data2.deleteAt(i);
+  }
+
+  String total() {
     FunctionsSavings calculator = FunctionsSavings();
-    return "₱" + calculator.calculateSavingsTotal(data);
+    return "₱" + calculator.calculateSavingsTotal(data2);
   }
 
-  void display() async{
+  void display() async {
     print(data);
-    for(int i = 0; i < data.length;i++){
-      print(data[i].workName);
-      print(data[i].category);
-      print(data[i].incomeAmount);
+    for (int i = 0; i < data2.length; i++) {
+      print(data2.getAt(i).workName);
+      print(data2.getAt(i).category);
+      print(data2.getAt(i).incomeAmount);
 
-      if(_key.currentState != null){
+      if (_key.currentState != null) {
         _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
 
         paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
         counter++;
       }
+      data.insert(
+          0,
+          Income(
+              workName: data2.getAt(i).workName,
+              category: data2.getAt(i).category,
+              incomeAmount: data2.getAt(i).incomeAmount));
     }
-
-
-
-
   }
 
   // Add a new item to the list
   // This is trigger when the floating button is pressed
   void _addItem() {
-    print(data.length);
+    _addToDatabase(Income(
+        workName: itemName.value.text,
+        category: itemType.value.text,
+        incomeAmount: double.parse(itemPrice.value.text)));
+    for(int i = 0; i<data2.length;i++){
+      print("Database Update: " + i.toString() +"   " + data2.getAt(i).workName);
+    }
+    print("Data Length: " + data.length.toString());
     paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
     counter++;
-    data.insert(0,
+    data.insert(
+        0,
         Income(
-            workName:itemName.value.text,
+            workName: itemName.value.text,
             category: itemType.value.text,
-            incomeAmount: double.parse(itemPrice.value.text
-            )));
+            incomeAmount: double.parse(itemPrice.value.text)));
 
     _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
     print("Numbers: " + _number.toString());
 
-    for(int i=0;i <data.length;i++){
+    for (int i = 0; i < data.length; i++) {
       print(data[i].workName);
     }
 
@@ -128,15 +147,19 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
     List reverseList = List.from(_number.reversed);
     print(reverseList.toString());
     for (int i = 0; i < reverseList.length; i++) {
-      print("Numbers: " + _number.toString());
-      print("Items: " + (data).toString());
       paints[reverseList[i]].selected = !paints[reverseList[i]].selected;
+      print("Delete: " + reverseList[i].toString());
       _removeItem(reverseList[i]);
+      _deleteOnDatabase((data2.length-1) - reverseList[i]);
     }
     for (int i = 0; i < (data).length; i++) {
       paints[i].checkbox = !paints[i].checkbox;
       paints[i].selected = false;
     }
+    for(int i = 0; i<data2.length;i++){
+      print("Database Update: " + i.toString() +"   " + data2.getAt(i).workName);
+    }
+    print("Data Length: " + data.length.toString());
     _number = [];
     setState(() {
       isSwitch = !isSwitch;
@@ -148,7 +171,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
   void _removeItem(int index) {
     _key.currentState!.removeItem(
       index,
-          (_, animation) {
+      (_, animation) {
         return SizeTransition(
           sizeFactor: animation,
           child: const Card(
@@ -156,9 +179,9 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
             child: ListTile(
               title: Center(
                   child: Text(
-                    "Removed",
-                    style: TextStyle(color: Colors.white),
-                  )),
+                "Removed",
+                style: TextStyle(color: Colors.white),
+              )),
             ),
           ),
         );
@@ -167,7 +190,6 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
     );
     (data).removeAt(index);
 
-    print((data));
   }
 
   bool isSwitch = false;
@@ -186,7 +208,6 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
       return const Icon(Icons.add);
     }
 
-    return const Icon(Icons.add);
   }
 
   Future<bool> customBackButton() async {
@@ -266,10 +287,10 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                             width: 70,
                             child: const Center(
                                 child: AutoSizeText(
-                                  'Type',
-                                  maxLines: 1,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
+                              'Type',
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )),
                           ),
                         ],
                       ),
@@ -279,7 +300,10 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                           'Amount',
                           maxLines: 1,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17, ),textAlign: TextAlign.left,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
                       ),
                     ),
@@ -302,12 +326,12 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                             sizeFactor: animation,
                             child: ListTile(
                               tileColor:
-                              paints[index].selected ? Colors.grey : null,
+                                  paints[index].selected ? Colors.grey : null,
                               leading: !(paints[index].selected)
                                   ? Visibility(
-                                  visible: paints[index].checkbox,
-                                  child: Icon(Icons.circle_outlined))
-                                  : Icon(Icons.check_circle_rounded),
+                                      visible: paints[index].checkbox,
+                                      child: const Icon(Icons.circle_outlined))
+                                  : const Icon(Icons.check_circle_rounded),
                               minLeadingWidth: 0,
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment
@@ -343,16 +367,19 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                               trailing: Container(
                                 width: 60,
                                 child: AutoSizeText(
-                                  '₱' + numberFormat.format((data)[index].incomeAmount).toString(),
+                                  '₱' +
+                                      numberFormat
+                                          .format((data)[index].incomeAmount)
+                                          .toString(),
                                   maxLines: 1,
                                 ),
                               ),
                               onTap: () {
                                 if (paints[index].checkbox) {
                                   setState(
-                                        () {
+                                    () {
                                       paints[index].selected =
-                                      !paints[index].selected;
+                                          !paints[index].selected;
                                     },
                                   );
                                   if (_number.contains(index)) {
@@ -369,7 +396,6 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                     paints[index].checkbox.toString());
                               },
                               onLongPress: () {
-
                                 _number.clear();
                                 setState(() {
                                   isSwitch = !isSwitch;
@@ -402,7 +428,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
             Container(
               margin: EdgeInsets.fromLTRB(40, 20, 40, 10),
               child: Row(
-                children:  [
+                children: [
                   const Expanded(
                       child: AutoSizeText('Total: ',
                           style: TextStyle(
@@ -446,7 +472,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                               width: 150,
                               child: Column(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     height: 55,
@@ -467,7 +493,7 @@ class _WorkIncomeMonitorScreenState extends State<WorkIncomeMonitorScreen> {
                                         labelText: 'Type',
                                         border: OutlineInputBorder(),
                                         hintText:
-                                        'ex. Full / Part-Time / Hustle',
+                                            'ex. Full / Part-Time / Hustle',
                                       ),
                                     ),
                                   ),

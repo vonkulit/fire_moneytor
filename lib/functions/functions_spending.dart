@@ -1,6 +1,7 @@
 import 'package:fire_moneytor/database/database.dart';
 import 'package:intl/intl.dart';
 import 'construct_spending.dart';
+import 'package:hive/hive.dart';
 
 class FunctionSpending {
 
@@ -33,13 +34,13 @@ class FunctionSpending {
         ));
   }
 
-  String calculateSpendTotal(List database) {
+  String calculateSpendTotal(Box<Spendings> database) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
     double cursorHolder = 0.0;
     double totalPrice = 0.0;
 
     for (int i = 0; i < database.length; i++) {
-      cursorHolder = database[i].price;
+      cursorHolder = database.getAt(i)!.price;
       totalPrice += cursorHolder;
     }
     return numberFormat.format(totalPrice).toString();
@@ -62,13 +63,11 @@ class FunctionSpending {
   }
 
   List getKeys() {
-    calculateSpendTotal(listBank);
     categorySpendSummary();
     return _keys;
   }
 
   List getValues() {
-    calculateSpendTotal(listBank);
     categorySpendSummary();
 
     return _values;

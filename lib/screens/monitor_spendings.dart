@@ -7,6 +7,7 @@ import 'package:fire_moneytor/database/database.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:fire_moneytor/functions/construct_spending.dart';
 import 'package:fire_moneytor/functions/functions_spending.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
@@ -22,11 +23,6 @@ class SpendingMonitorScreen extends StatefulWidget {
 class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
   NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
 
-  int itemCounter = 0;
-  final itemName = TextEditingController();
-  final itemType = TextEditingController();
-  final itemPrice = TextEditingController();
-  int counter = 0;
 
   @override
   void dispose() {
@@ -35,6 +31,17 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
     itemPrice.dispose();
     super.dispose();
   }
+
+  late final data2;
+  final itemName = TextEditingController();
+  final itemType = TextEditingController();
+  final itemPrice = TextEditingController();
+
+
+
+  int itemCounter = 0;
+  int counter = 0;
+
 
   Database database = Database();
   List<Spendings> data = [];
@@ -52,27 +59,36 @@ class _SpendingMonitorScreenState extends State<SpendingMonitorScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    data2 = Hive.box<Spendings>("listBank");
     data = database.listBank;
+    total();
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // do what you want here
       display();
     });
 
-
-
+}
+  _addToDatabase(Spendings item){
+    data2.add(item);
   }
+  _deleteOnDatabase(int i){
+    data2.deleteAt(i);
+  }
+
 String total(){
   FunctionSpending calculator = FunctionSpending();
-    return "₱" + calculator.calculateSpendTotal(data);
+    return "₱" + calculator.calculateSpendTotal(data2);
 }
 
+
+
   void display() async{
-    print(data);
-    for(int i = 0; i < data.length;i++){
-      print(data[i].item);
-      print(data[i].category);
-      print(data[i].price);
+    print(data2);
+    for(int i = 0; i < data2.length;i++){
+      print(data2.getAt(i).item);
+      print(data2.getAt(i).category);
+      print(data2.getAt(i).price);
 
       if(_key.currentState != null){
         _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
@@ -80,7 +96,14 @@ String total(){
         paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
         counter++;
       }
-      }
+
+      data.insert(0, Spendings(item: data2.getAt(i).item, category: data2.getAt(i).category, price: data2.getAt(i).price));
+
+
+    }
+
+
+
 
 
 
@@ -90,7 +113,14 @@ String total(){
   // Add a new item to the list
   // This is trigger when the floating button is pressed
   void _addItem() {
-    print(data.length);
+    _addToDatabase(Spendings(
+        item:itemName.value.text,
+        category: itemType.value.text,
+        price: double.parse(itemPrice.value.text)));
+    for(int i = 0; i<data2.length;i++){
+      print("Database Update: " + i.toString() +"   " + data2.getAt(i).item);
+    }
+    print("Data Length: " + data.length.toString());
     paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
     counter++;
     data.insert(0,
@@ -127,15 +157,19 @@ String total(){
     List reverseList = List.from(_number.reversed);
     print(reverseList.toString());
     for (int i = 0; i < reverseList.length; i++) {
-      print("Numbers: " + _number.toString());
-      print("Items: " + (data).toString());
       paints[reverseList[i]].selected = !paints[reverseList[i]].selected;
+      print("Delete: " + reverseList[i].toString());
       _removeItem(reverseList[i]);
+      _deleteOnDatabase((data2.length-1) - reverseList[i]);
     }
     for (int i = 0; i < (data).length; i++) {
       paints[i].checkbox = !paints[i].checkbox;
       paints[i].selected = false;
     }
+    for(int i = 0; i<data2.length;i++){
+      print("Database Update: " + i.toString() +"   " + data2.getAt(i).item);
+    }
+    print("Data Length: " + data.length.toString());
     _number = [];
     setState(() {
       isSwitch = !isSwitch;
@@ -166,7 +200,6 @@ String total(){
     );
     (data).removeAt(index);
 
-    print((data));
   }
 
   bool isSwitch = false;
@@ -185,7 +218,6 @@ String total(){
       return const Icon(Icons.add);
     }
 
-    return const Icon(Icons.add);
   }
 
   Future<bool> customBackButton() async {
@@ -305,8 +337,8 @@ String total(){
                               leading: !(paints[index].selected)
                                   ? Visibility(
                                       visible: paints[index].checkbox,
-                                      child: Icon(Icons.circle_outlined))
-                                  : Icon(Icons.check_circle_rounded),
+                                      child: const Icon(Icons.circle_outlined))
+                                  : const Icon(Icons.check_circle_rounded),
                               minLeadingWidth: 0,
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment
@@ -372,7 +404,7 @@ String total(){
                                 _number.clear();
                                 setState(() {
                                   isSwitch = !isSwitch;
-                                  for (int i = 0; i < (data).length; i++) {
+                                  for (int i = 0; i < data2.length; i++) {
                                     paints[i].checkbox = !paints[i].checkbox;
                                     paints[i].selected = false;
                                   }
@@ -552,7 +584,7 @@ class Paint {
     }
 
     // Items in the list
-    final (data) = [];
+    final data2 = [];
 
     // The key of the list
     final GlobalKey<AnimatedListState> _key = GlobalKey();
@@ -560,14 +592,14 @@ class Paint {
     // Add a new item to the list
     // This is trigger when the floating button is pressed
     void _addItem() {
-      (data).insert(
+      data2.insert(
           0,
           Spendings(
               item: itemName.value.text,
               category: itemType.value.text,
               price: double.parse(itemPrice.value.text)));
       _key.currentState!.insertItem(0, duration: Duration(seconds: 1));
-      print((data));
+      print(data2);
       itemName.clear();
       itemPrice.clear();
       itemType.clear();
@@ -597,7 +629,7 @@ class Paint {
         },
       );
 
-      (data).removeAt(index);
+      data2.removeAt(index);
     }
 
     return Scaffold(
@@ -677,7 +709,7 @@ class Paint {
                                   .spaceBetween, //Center Row contents horizontally,
                               children: [
                                 AutoSizeText(
-                                  (data)[index].item,
+                                  data2[index].item,
                                   textAlign: TextAlign.left,
                                   maxLines: 1,
                                 ),
@@ -692,13 +724,13 @@ class Paint {
                                           Radius.circular(100))),
                                   child: Center(
                                       child: AutoSizeText(
-                                          (data)[index].category,
+                                          data2[index].category,
                                           maxLines: 1)),
                                 ),
                               ],
                             ),
                             trailing: AutoSizeText(
-                              '₱' + (data)[index].price.toString(),
+                              '₱' + data2[index].price.toString(),
                               maxLines: 1,
                             ),
                           ),

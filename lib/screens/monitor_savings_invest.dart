@@ -6,6 +6,7 @@ import 'package:fire_moneytor/database/database.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:fire_moneytor/functions/construct_savings_invest.dart';
 import 'package:fire_moneytor/functions/functions_savings_invest.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +23,8 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
   NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
 
   int itemCounter = 0;
+
+  late final data2;
   final itemName = TextEditingController();
   final itemType = TextEditingController();
   final itemPrice = TextEditingController();
@@ -51,7 +54,10 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
+    data2 = Hive.box<SavingsInvestments>("bankList");
     data = database.bankList;
+    total();
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // do what you want here
@@ -61,17 +67,27 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
 
 
   }
+
+
+  _addToDatabase(SavingsInvestments item){
+    data2.add(item);
+  }
+  _deleteOnDatabase(int i){
+    data2.deleteAt(i);
+  }
+
+
   String total(){
     FunctionSavings calculator = FunctionSavings();
-    return "₱" + calculator.calculateSavingsTotal(data);
+    return "₱" + calculator.calculateSavingsTotal(data2);
   }
 
   void display() async{
     print(data);
-    for(int i = 0; i < data.length;i++){
-      print(data[i].name);
-      print(data[i].category);
-      print(data[i].savings);
+    for(int i = 0; i < data2.length;i++){
+      print(data2.getAt(i).name);
+      print(data2.getAt(i).category);
+      print(data2.getAt(i).savings);
 
       if(_key.currentState != null){
         _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
@@ -79,6 +95,9 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
         paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
         counter++;
       }
+
+      data.insert(0, SavingsInvestments(name: data2.getAt(i).name, category: data2.getAt(i).category, savings: data2.getAt(i).savings));
+
     }
 
 
@@ -89,7 +108,14 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
   // Add a new item to the list
   // This is trigger when the floating button is pressed
   void _addItem() {
-    print(data.length);
+    _addToDatabase(SavingsInvestments(
+        name:itemName.value.text,
+        category: itemType.value.text,
+        savings: double.parse(itemPrice.value.text)));
+    for(int i = 0; i<data2.length;i++){
+      print("Database Update: " + i.toString() +"   " + data2.getAt(i).name);
+    }
+    print("Data Length: " + data.length.toString());
     paints.insert(0, Paint(itemCounter, 'Red', Colors.red));
     counter++;
     data.insert(0,
@@ -126,15 +152,19 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
     List reverseList = List.from(_number.reversed);
     print(reverseList.toString());
     for (int i = 0; i < reverseList.length; i++) {
-      print("Numbers: " + _number.toString());
-      print("Items: " + (data).toString());
       paints[reverseList[i]].selected = !paints[reverseList[i]].selected;
+      print("Delete: " + reverseList[i].toString());
       _removeItem(reverseList[i]);
+      _deleteOnDatabase((data2.length-1) - reverseList[i]);
     }
     for (int i = 0; i < (data).length; i++) {
       paints[i].checkbox = !paints[i].checkbox;
       paints[i].selected = false;
     }
+    for(int i = 0; i<data2.length;i++){
+      print("Database Update: " + i.toString() +"   " + data2.getAt(i).item);
+    }
+    print("Data Length: " + data.length.toString());
     _number = [];
     setState(() {
       isSwitch = !isSwitch;
@@ -165,7 +195,6 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
     );
     (data).removeAt(index);
 
-    print((data));
   }
 
   bool isSwitch = false;
@@ -184,7 +213,6 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
       return const Icon(Icons.add);
     }
 
-    return const Icon(Icons.add);
   }
 
   Future<bool> customBackButton() async {
@@ -304,8 +332,8 @@ class _SavingMonitorScreenState extends State<SavingMonitorScreen> {
                               leading: !(paints[index].selected)
                                   ? Visibility(
                                   visible: paints[index].checkbox,
-                                  child: Icon(Icons.circle_outlined))
-                                  : Icon(Icons.check_circle_rounded),
+                                  child: const Icon(Icons.circle_outlined))
+                                  : const Icon(Icons.check_circle_rounded),
                               minLeadingWidth: 0,
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment
