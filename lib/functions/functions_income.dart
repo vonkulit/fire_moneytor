@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:fire_moneytor/database/database.dart';
 import 'package:hive/hive.dart';
 
-class FunctionsSavings {
+class FunctionIncome {
 
   Database theData = Database();
   List<Income> incomeList = [];
@@ -48,7 +48,7 @@ class FunctionsSavings {
         0, Income(workName: workName,category: type, incomeAmount: incomeAmount));
   }
 
-  String calculateSavingsTotal(Box<Income> incomeList) {
+  String calculateIncomeTotal(Box<Income> incomeList) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
     double cursorHolder = 0.0;
     double totalPrice = 0.0;

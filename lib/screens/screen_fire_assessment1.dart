@@ -1,4 +1,3 @@
-import 'package:fire_moneytor/functions/construct_spending.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,24 +16,20 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
 
   late final data2;
 
+  _addItem() async{
+    await data2.clear();
+    data2.add(textFieldExpenses.value.text);
+    print(data2);
+    print("I am the length " + data2.length.toString() );
+    print("assessment 1 clear");
+  }
+
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     textFieldExpenses.dispose();
     super.dispose();
-  }
-
-  void initstate(){
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      // do what you want here
-      });
-    super.initState();
-  }
-
-
-  _addToDatabase(Spendings item){
-    data2.add(item);
   }
 
   @override
@@ -112,11 +107,9 @@ class _FireAssessmentScreenState extends State<FireAssessmentScreen> {
         height: 40.0,
         child: FloatingActionButton(
           onPressed: () {
-            data2 = Hive.box<Spendings>("listBank");
-            _addToDatabase(Spendings(
-                item:"Estimated Expenses",
-                category: "Overall",
-                price: double.parse(textFieldExpenses.value.text)));
+            data2 = Hive.box("assessment");
+            _addItem();
+
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => FireAssessmentScreen2(
                       textFieldExpenses: textFieldExpenses.text,

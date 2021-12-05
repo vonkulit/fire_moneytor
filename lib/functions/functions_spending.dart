@@ -17,6 +17,10 @@ class FunctionSpending {
   static List _values = [];
   static List _keys = [];
 
+  List returnExpenses() {
+    return listBank;
+  }
+
   void addList(String name, String category, double price) {
 
     List<Spendings> listBank = theData.getSpendingsData();
