@@ -53,9 +53,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   List _keys3 = [];
 
   chartSavings() {
-    data2.getAt(0).name;
-    data2.getAt(0).savings;
-
     for (int i = 0; i < data2.length; i++) {
       if (!map3.containsKey(data2.getAt(i).category)) {
         map3[data2.getAt(i).category] = 1;
@@ -69,9 +66,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   chartIncome() {
-    data1.getAt(0).workName;
-    data1.getAt(0).incomeAmount;
-
     for (int i = 0; i < data1.length; i++) {
       if (!map2.containsKey(data1.getAt(i).category)) {
         map2[data1.getAt(i).category] = 1;
@@ -85,9 +79,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   chartSpendings() {
-    data3.getAt(0).item;
-    data3.getAt(0).price;
-
     for (int i = 0; i < data3.length; i++) {
       if (!map1.containsKey(data3.getAt(i).category)) {
         map1[data3.getAt(i).category] = 1;
