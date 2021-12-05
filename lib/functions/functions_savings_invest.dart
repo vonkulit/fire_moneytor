@@ -1,6 +1,7 @@
 import 'package:fire_moneytor/database/database.dart';
 import 'package:intl/intl.dart';
 import 'construct_savings_invest.dart';
+import 'package:hive/hive.dart';
 
 class FunctionSavings {
 
@@ -18,10 +19,6 @@ class FunctionSavings {
   List _values = [];
   List _keys = [];
 
-  String getTotalSavings() {
-    calculateSavingsTotal(bankList);
-    return "₱ $_totalSavings";
-  }
 
   void bankSummary() {
     for (int i = 0; i < bankList.length; i++) {
@@ -34,30 +31,30 @@ class FunctionSavings {
     _keys = map.keys.toList();
     _values = map.values.toList();
   }
-
-  List getKeys() {
-    bankSummary();
-    calculateSavingsTotal(bankList);
-    return _keys;
-  }
-
-  List getValues() {
-    bankSummary();
-    calculateSavingsTotal(bankList);
-    return _values;
-  }
+  //
+  // List getKeys() {
+  //   bankSummary();
+  //   calculateSavingsTotal(bankList);
+  //   return _keys;
+  // }
+  //
+  // List getValues() {
+  //   bankSummary();
+  //   calculateSavingsTotal(bankList);
+  //   return _values;
+  // }
 
   void addList(String name, String type, double savings) {
     bankList.insert(0, SavingsInvestments(name: name, category: type, savings: savings));
   }
 
-  String calculateSavingsTotal(List bankList) {
+  String calculateSavingsTotal(Box<SavingsInvestments> bankList) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
     double cursorHolder = 0.0;
     double totalPrice = 0.0;
 
     for (int i = 0; i < bankList.length; i++) {
-      cursorHolder = bankList[i].savings;
+      cursorHolder = bankList.getAt(i)!.savings;
       totalPrice += cursorHolder;
     }
     _totalSavings = totalPrice.toStringAsFixed(2);

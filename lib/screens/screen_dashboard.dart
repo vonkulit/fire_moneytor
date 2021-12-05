@@ -14,17 +14,10 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-  late List<GDPData> _savingsData = [];
-  late List<GDPData> _chartData;
-  late List<GDPData> _incomeData;
   late String _displayProgress = "";
 
   @override
   void initState() {
-    _savingsData = savingsChartData();
-    _chartData = getChartData();
-    _incomeData = incomeChartData();
-    _displayProgress = FunctionSavings().getTotalSavings();
 
     super.initState();
   }
@@ -137,7 +130,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-                            dataSource: _chartData,
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
@@ -191,7 +183,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-                            dataSource: _savingsData,
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
@@ -245,7 +236,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-                            dataSource: _incomeData,
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
@@ -273,32 +263,32 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return chartData;
   }
 }
-
-List<GDPData> incomeChartData() {
-  List ourKeys = FunctionsSavings().getKeys();
-
-  List ourValues = FunctionsSavings().getValues();
-
-  List<GDPData> chartData = [];
-  for (int i = 0; i < ourValues.length; i++) {
-    chartData.add(GDPData(ourKeys[i], ourValues[i]));
-  }
-
-  return chartData;
-}
-
-List<GDPData> savingsChartData() {
-  List ourKeys = FunctionSavings().getKeys();
-
-  List ourValues = FunctionSavings().getValues();
-
-  List<GDPData> chartData = [];
-  for (int i = 0; i < ourValues.length; i++) {
-    chartData.add(GDPData(ourKeys[i], ourValues[i]));
-  }
-
-  return chartData;
-}
+//
+// List<GDPData> incomeChartData() {
+//   // List ourKeys = FunctionsSavings().getKeys();
+//
+//   // List ourValues = FunctionsSavings().getValues();
+//
+//   List<GDPData> chartData = [];
+//   for (int i = 0; i < ourValues.length; i++) {
+//     chartData.add(GDPData(ourKeys[i], ourValues[i]));
+//   }
+//
+//   return chartData;
+// }
+//
+// List<GDPData> savingsChartData() {
+//   // List ourKeys = FunctionSavings().getKeys();
+//
+//   // List ourValues = FunctionSavings().getValues();
+//
+//   List<GDPData> chartData = [];
+//   for (int i = 0; i < ourValues.length; i++) {
+//     chartData.add(GDPData(ourKeys[i], ourValues[i]));
+//   }
+//
+//   return chartData;
+// }
 
 class GDPData {
   GDPData(this.continent, this.gdp);

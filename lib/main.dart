@@ -4,6 +4,8 @@ import 'package:fire_moneytor/screens/screen_dashboard.dart';
 import 'package:fire_moneytor/screens/screen_main.dart';
 import 'package:fire_moneytor/screens/screen_wha_is_fire.dart';
 import 'package:flutter/material.dart';
+import 'functions/construct_income.dart';
+import 'functions/construct_savings_invest.dart';
 import 'functions/construct_spending.dart';
 import 'screens/screen_main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -12,7 +14,12 @@ void main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(SpendingsAdapter());
+  Hive.registerAdapter(SavingsInvestmentsAdapter());
+  Hive.registerAdapter(IncomeAdapter());
+
   await Hive.openBox<Spendings>('listBank');
+  await Hive.openBox<SavingsInvestments>('bankList');
+  await Hive.openBox<Income>('incomeList');
 
 
   WidgetsFlutterBinding.ensureInitialized();

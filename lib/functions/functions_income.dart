@@ -1,6 +1,7 @@
 import 'construct_income.dart';
 import 'package:intl/intl.dart';
 import 'package:fire_moneytor/database/database.dart';
+import 'package:hive/hive.dart';
 
 class FunctionsSavings {
 
@@ -29,31 +30,31 @@ class FunctionsSavings {
     _keys = map.keys.toList();
     _values = map.values.toList();
   }
-
-  List getKeys() {
-    bankSummary();
-    calculateSavingsTotal(incomeList);
-    return _keys;
-  }
-
-  List getValues() {
-    bankSummary();
-    calculateSavingsTotal(incomeList);
-    return _values;
-  }
+  //
+  // List getKeys() {
+  //   bankSummary();
+  //   calculateSavingsTotal(incomeList);
+  //   return _keys;
+  // }
+  //
+  // List getValues() {
+  //   bankSummary();
+  //   calculateSavingsTotal(incomeList);
+  //   return _values;
+  // }
 
   void addList(String workName, String type, double incomeAmount) {
     incomeList.insert(
         0, Income(workName: workName,category: type, incomeAmount: incomeAmount));
   }
 
-  String calculateSavingsTotal(List incomeList) {
+  String calculateSavingsTotal(Box<Income> incomeList) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
     double cursorHolder = 0.0;
     double totalPrice = 0.0;
 
     for (int i = 0; i < incomeList.length; i++) {
-      cursorHolder = incomeList[i].incomeAmount;
+      cursorHolder = incomeList.getAt(i)!.incomeAmount;
       totalPrice += cursorHolder;
     }
     return numberFormat.format(totalPrice).toString();

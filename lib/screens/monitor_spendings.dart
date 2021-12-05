@@ -218,7 +218,6 @@ String total(){
       return const Icon(Icons.add);
     }
 
-    return const Icon(Icons.add);
   }
 
   Future<bool> customBackButton() async {
@@ -338,8 +337,8 @@ String total(){
                               leading: !(paints[index].selected)
                                   ? Visibility(
                                       visible: paints[index].checkbox,
-                                      child: Icon(Icons.circle_outlined))
-                                  : Icon(Icons.check_circle_rounded),
+                                      child: const Icon(Icons.circle_outlined))
+                                  : const Icon(Icons.check_circle_rounded),
                               minLeadingWidth: 0,
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment
