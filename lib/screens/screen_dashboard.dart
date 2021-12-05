@@ -2,13 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fire_moneytor/functions/construct_income.dart';
 import 'package:fire_moneytor/functions/construct_savings_invest.dart';
 import 'package:fire_moneytor/functions/construct_spending.dart';
-import 'package:fire_moneytor/functions/functions_savings_invest.dart';
 import 'package:fire_moneytor/functions/functions_income.dart';
+import 'package:fire_moneytor/functions/functions_savings_invest.dart';
 import 'package:fire_moneytor/functions/functions_spending.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:hive/hive.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
@@ -22,6 +22,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   late final data1;
   late final data2;
   late final data3;
+  late List<GDPData> _ExpensesData = [];
+  late List<GDPData> _IncomeData = [];
+  late List<GDPData> _SavingsData = [];
 
   @override
   void initState() {
@@ -30,52 +33,118 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     data2 = Hive.box<SavingsInvestments>('bankList');
     data3 = Hive.box<Spendings>('listBank');
     chartSpendings();
+    chartIncome();
+    chartSavings();
     _currentProgress();
+    _ExpensesData = ExpensesChartData();
+    _IncomeData = IncomeChartData();
+    _SavingsData = SavingsChartData();
     super.initState();
   }
 
-  chartSpendings(){
+  Map map1 = Map();
+  Map map2 = Map();
+  Map map3 = Map();
+  List _values1 = []; //expenses
+  List _values2 = []; //income
+  List _values3 = []; //savings
+  List _keys1 = [];
+  List _keys2 = [];
+  List _keys3 = [];
+
+  chartSavings() {
+    data2.getAt(0).name;
+    data2.getAt(0).savings;
+
+    for (int i = 0; i < data2.length; i++) {
+      if (!map3.containsKey(data2.getAt(i).category)) {
+        map3[data2.getAt(i).category] = 1;
+      } else {
+        map3[data2.getAt(i).category] += 1;
+      }
+    }
+
+    _keys3 = map3.keys.toList();
+    _values3 = map3.values.toList();
+  }
+
+  chartIncome() {
+    data1.getAt(0).workName;
+    data1.getAt(0).incomeAmount;
+
+    for (int i = 0; i < data1.length; i++) {
+      if (!map2.containsKey(data1.getAt(i).category)) {
+        map2[data1.getAt(i).category] = 1;
+      } else {
+        map2[data1.getAt(i).category] += 1;
+      }
+    }
+
+    _keys2 = map2.keys.toList();
+    _values2 = map2.values.toList();
+  }
+
+  chartSpendings() {
     data3.getAt(0).item;
     data3.getAt(0).price;
 
-      Map map = Map();
-      List _values =[];
-      List _keys = [];
-
-      for (int i = 0; i < data3.length; i++) {
-        if (!map.containsKey(data3.getAt(i).category)) {
-          map[data3.getAt(i).category] = 1;
-        } else {
-          map[data3.getAt(i).category] += 1;
-        }
+    for (int i = 0; i < data3.length; i++) {
+      if (!map1.containsKey(data3.getAt(i).category)) {
+        map1[data3.getAt(i).category] = 1;
+      } else {
+        map1[data3.getAt(i).category] += 1;
+      }
     }
 
-    _keys = map.keys.toList();
-    _values = map.values.toList();
+    _keys1 = map1.keys.toList();
+    _values1 = map1.values.toList();
   }
 
+  List getKeys1() {
+    return _keys1;
+  }
 
-  _currentProgress(){
+  List getValues1() {
+    return _values1;
+  }
+
+  List getKeys2() {
+    return _keys2;
+  }
+
+  List getValues2() {
+    return _values2;
+  }
+
+  List getKeys3() {
+    return _keys3;
+  }
+
+  List getValues3() {
+    return _values3;
+  }
+
+  _currentProgress() {
     FunctionSavings calculator = FunctionSavings();
     _displayProgress = "₱" + calculator.calculateSavingsTotal(data2);
   }
 
-  String fireGoal(){
+  String fireGoal() {
     FunctionSpending calculator = FunctionSpending();
     return "₱" + calculator.calculateSpendTotal(data3);
   }
 
-  String totalExpenses(){
+  String totalExpenses() {
     FunctionSpending calculator = FunctionSpending();
     return "₱" + calculator.calculateSpendTotal(data3);
   }
 
-  String totalSavings(){
+  String totalSavings() {
     FunctionSavings calculator = FunctionSavings();
     return "₱" + calculator.calculateSavingsTotal(data2);
   }
 
-  String totalIncome(){
+  String totalIncome() {
     FunctionIncome calculator = FunctionIncome();
     return "₱" + calculator.calculateIncomeTotal(data1);
   }
@@ -131,7 +200,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     indent: 10,
                     endIndent: 10,
                   ),
-                   Center(
+                  Center(
                     child: Text('Your Fire Goal is ' + fireGoal(),
                         style: const TextStyle(
                             color: Colors.red, fontWeight: FontWeight.bold)),
@@ -188,9 +257,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-                            dataSource: data3,
-                            xValueMapper: (GDPData data, _) => data3.item,
-                            yValueMapper: (GDPData data, _) => data3.price,
+                            dataSource: _ExpensesData,
+                            xValueMapper: (GDPData data, _) => data.continent,
+                            yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
                                 const DataLabelSettings(isVisible: true))
                       ],
@@ -242,6 +311,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
+                            dataSource: _SavingsData,
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
@@ -295,7 +365,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       legend: Legend(isVisible: true),
                       series: <CircularSeries>[
                         PieSeries<GDPData, String>(
-
+                            dataSource: _IncomeData,
                             xValueMapper: (GDPData data, _) => data.continent,
                             yValueMapper: (GDPData data, _) => data.gdp,
                             dataLabelSettings:
@@ -310,10 +380,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     );
   }
 
-  List<GDPData> getChartData() {
-    List ourKeys = FunctionSpending().getKeys();
+  List<GDPData> ExpensesChartData() {
+    List ourKeys = getKeys1();
 
-    List ourValues = FunctionSpending().getValues();
+    List ourValues = getValues1();
 
     List<GDPData> chartData = [];
     for (int i = 0; i < ourValues.length; i++) {
@@ -322,6 +392,38 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
     return chartData;
   }
+
+  List<GDPData> IncomeChartData() {
+    List ourKeys = getKeys2();
+
+    List ourValues = getValues2();
+
+    List<GDPData> chartData = [];
+    for (int i = 0; i < ourValues.length; i++) {
+      chartData.add(GDPData(ourKeys[i], ourValues[i]));
+    }
+
+    return chartData;
+  }
+
+  List<GDPData> SavingsChartData() {
+    List ourKeys = getKeys3();
+
+    List ourValues = getValues3();
+
+    List<GDPData> chartData = [];
+    for (int i = 0; i < ourValues.length; i++) {
+      chartData.add(GDPData(ourKeys[i], ourValues[i]));
+    }
+
+    return chartData;
+  }
+}
+
+class GDPData {
+  GDPData(this.continent, this.gdp);
+  final String continent;
+  final int gdp;
 }
 //
 // List<GDPData> incomeChartData() {
@@ -349,9 +451,3 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 //
 //   return chartData;
 // }
-
-class GDPData {
-  GDPData(this.continent, this.gdp);
-  final String continent;
-  final int gdp;
-}
