@@ -60,12 +60,11 @@ class _WhatIsFireScreenState extends State<WhatIsFireScreen> {
                         padding:
                             const EdgeInsets.only(left: 10, right: 10, top: 10),
                         child: Text(
-                          'FIRE stands for Financial Independence, Retire Early.'
-                          'It is a program wherein extreme savings and investment are carefully '
-                          'planned and executed in order to retire much earlier than what traditional budgets and'
-                          'and retirement plans would make. By dedicating a majority of their income to savings, '
-                          'followers of the FIRE movement hope to be able to quit their jobs '
-                          'and live solely off small withdrawals from their portfolios decades before they reach 65.',
+                          'FIRE stands for Financial Independence, Retire Early. It is a program wherein extreme savings and investment are carefully planned and executed in order to retire much earlier than what traditional budgets and retirement plans would make. By dedicating a majority of their income to savings, followers of the FIRE movement hope to be able to quit their jobs and live solely off small withdrawals from their portfolios decades before they reach 65. But with millennials discovering the FIRE movement at an early age, some are retiring as early as 30',
+                          textAlign: TextAlign.justify,
+
+
+
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
