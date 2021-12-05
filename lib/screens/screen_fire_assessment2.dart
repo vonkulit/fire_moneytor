@@ -1,7 +1,9 @@
+import 'package:fire_moneytor/functions/construct_savings_invest.dart';
 import 'package:fire_moneytor/screens/screen_fire_assessment3.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 
 class FireAssessmentScreen2 extends StatefulWidget {
   final String textFieldExpenses;
@@ -15,6 +17,15 @@ class FireAssessmentScreen2 extends StatefulWidget {
 
 class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
   final textFieldSavings = TextEditingController();
+
+
+  late final data2;
+
+
+
+  _addToDatabase(SavingsInvestments item){
+    data2.add(item);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +102,11 @@ class _FireAssessmentScreen2State extends State<FireAssessmentScreen2> {
         height: 40.0,
         child: FloatingActionButton(
           onPressed: () {
+            data2 = Hive.box<SavingsInvestments>("bankList");
+            _addToDatabase(SavingsInvestments(
+                name:"My Saavings",
+                category: "Overall",
+                savings: double.parse(textFieldSavings.value.text)));
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => FireAssessmentScreen3(
                       textFieldExpenses: widget.textFieldExpenses,
