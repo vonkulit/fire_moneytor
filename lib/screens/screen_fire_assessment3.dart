@@ -24,11 +24,10 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
 
   late final data2;
 
-
-
   _addToDatabase(Income item) {
     data2.add(item);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,17 +115,19 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 contentPadding: EdgeInsets.zero,
                 backgroundColor: const Color(0xFFB9FFB9),
-                title: Text(
-                  'Results',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
+                title: Center(
+                  child: Text(
+                    'Results',
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 content: Container(
                   width: 700,
-                  height: 370,
+                  height: 360,
                   decoration: const BoxDecoration(
                       shape: BoxShape.rectangle,
                       color: Colors.white,
@@ -134,61 +135,58 @@ class _FireAssessmentScreen3State extends State<FireAssessmentScreen3> {
                         bottomLeft: Radius.circular(15),
                         bottomRight: Radius.circular(15),
                       )),
-                  child: Column(
+                  child: ListView(
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, top: 25),
-                            child: SizedBox(
-                              child: Text(
-                                'With your current data\n'
-                                    'you have 43 years to reach\n'
-                                    'your \$1,000,000 goal\n'
-                                    'for retirement. You can\n'
-                                    'further bring it closer by\n'
-                                    'adding more to your inv.\n'
-                                    'saving, decrease your\n'
-                                    'monthly expenses, and\n'
-                                    'look for more side hustles.\n\n'
-                                    'GOOD LUCK FUTURE\n'
-                                    'MILLIONAIRE!',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey[700]),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, top: 15, right: 20),
+                              child: SizedBox(
+                                child: Text(
+                                  'With your current data'
+                                  ' you have 43 years to reach'
+                                  ' your \$1,000,000 goal'
+                                  ' for retirement. You can'
+                                  ' further bring it closer by'
+                                  ' adding more to your inv.'
+                                  ' saving, decrease your'
+                                  ' monthly expenses, and'
+                                  ' look for more side hustles. \n\n'
+                                  'GOOD LUCK FUTURE\n'
+                                  'MILLIONAIRE!',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey[700]),
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20, top: 10),
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFF2CDB30),
-                                ),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10))),
-                              ),
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                      const DashBoardScreen(),
-                                    ));
-                              },
-                              child: const Text('Dashboard')),
-                        ),
-                      ),
                     ],
                   ),
                 ),
+                actions: <Widget>[
+                  ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          const Color(0xFF2CDB30),
+                        ),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DashBoardScreen(),
+                            ));
+                      },
+                      child: const Text('Dashboard')),
+                ],
               ),
             );
           },

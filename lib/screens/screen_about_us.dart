@@ -1,3 +1,4 @@
+import 'package:fire_moneytor/functions/construct_about_us.dart';
 import 'package:fire_moneytor/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class AboutUsScreen extends StatefulWidget {
 }
 
 class _AboutUsScreenState extends State<AboutUsScreen> {
+  FunctionStudents functionStudent = FunctionStudents();
   ListView getAboutUs() {
     List<Widget> name = [];
 
@@ -35,13 +37,16 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Image.asset(
-                  'images/Jan_About_Us.jpg',
+                  "images/${functionStudent.bank[i].imageN}",
                   width: 190,
                 ),
-                const Text(
-                  'asd',
+                Text(
+                  '${functionStudent.bank[i].name} \n '
+                  '${functionStudent.bank[i].university}\n'
+                  '${functionStudent.bank[i].course}\n'
+                  '${functionStudent.bank[i].quote}',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     height: 1.8,
                   ),
